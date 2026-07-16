@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- skill:chrome -->
+<style>
+/* Credit line — bottom-right */
+.design-ui-credit {
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  font: 11px/1 system-ui, sans-serif;
+  color: rgba(128,128,128,0.5);
+  pointer-events: none;
+  z-index: 2147483647;
+  transition: opacity 0.4s ease;
+  user-select: none;
+  letter-spacing: 0.02em;
+}
+
+/* Hide chrome on touch devices */
+@media (hover: none) {
+  .design-ui-credit { display: none; }
+}
+
+/* Print fixes */
+@media print {
+  * {
+    transition: none !important;
+    animation: none !important;
+    box-shadow: none !important;
+  }
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .design-ui-credit { display: none !important; }
+}
+
+</style>
+<script>
+(function () {
+    // Design-ui pages are single compositions, so the whole body is editable.
+    function markEditable() {
+        document.body.classList.add('artifact-editable');
+    }
+
+    // Credit badge with idle-fade. Hover devices only.
+    function initChromeUI() {
+        if (!matchMedia('(hover: hover)').matches) return;
+
+        var credit = document.createElement('div');
+        credit.className = 'design-ui-credit';
+        credit.setAttribute('aria-hidden', 'true');
+        credit.innerHTML = '\u{1F49C} by ClickUp Brain';
+        document.body.appendChild(credit);
+
+        var timer = null;
+        var fade = function (out) { credit.style.opacity = out ? '0' : ''; };
+        fade(true);
+        var show = function () {
+            fade(false);
+            clearTimeout(timer);
+            timer = setTimeout(function () { fade(true); }, 3000);
+        };
+        document.addEventListener('mousemove', show);
+        show();
+    }
+
+    function init() {
+        markEditable();
+        initChromeUI();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+
+</script>
+<!-- /skill:chrome -->
+<!-- skill:libraries -->
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.383.0/dist/umd/lucide.min.js" integrity="sha384-wHFvAtjmgnkA2PJcMsDaCgdipf7X7YV44X/igbLHpvGiq6T5/PvFKl93grpvtbQT" crossorigin="anonymous"></script>
+<script>document.addEventListener("DOMContentLoaded",()=>lucide.createIcons())</script>
+<!-- /skill:libraries -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Practice1 - LP360 (Tool Guide Enhanced)</title>
+<style>
+  :root{
+    --chrome: oklch(0.955 0.004 250);
+    --chrome-2: oklch(0.925 0.005 250);
+    --line: oklch(0.84 0.006 250);
+    --line-soft: oklch(0.90 0.005 250);
+    --ink: oklch(0.28 0.01 255);
+    --ink-soft: oklch(0.46 0.012 255);
+    --disabled: oklch(0.72 0.008 255);
+    --accent: oklch(0.55 0.12 235);
+    --accent-soft: oklch(0.93 0.045 235);
+    --accent-line: oklch(0.72 0.09 235);
+    --icon-teal: oklch(0.56 0.075 210);
+    --icon-green: oklch(0.72 0.16 145);
+    --icon-red: oklch(0.62 0.20 25);
+    --icon-yellow: oklch(0.84 0.15 95);
+    --icon-blue: oklch(0.58 0.15 255);
+    --titlebar: oklch(0.985 0.002 250);
+    --hover: oklch(0.90 0.05 235);
+    --hover-line: oklch(0.74 0.08 235);
+    --active-fill: oklch(0.85 0.07 235);
+    --dlg: oklch(0.965 0.003 250);
+    --w-line: oklch(0.82 0.006 250);
+    --w-accent: oklch(0.55 0.14 255);
+    --link: oklch(0.5 0.16 258);
+    --field-disabled-ink: oklch(0.62 0.01 255);
+    --sel: oklch(0.9 0.06 255);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{
+    font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-size:12px;color:var(--ink);background:oklch(0.965 0.003 250);
+    -webkit-font-smoothing:antialiased;display:flex;flex-direction:column;height:100vh;overflow:hidden;
+  }
+  i[data-lucide]{stroke-width:1.7}
+  .titlebar-app{display:flex;align-items:center;height:30px;background:var(--titlebar);border-bottom:1px solid var(--line-soft);padding-left:6px;position:relative;flex-shrink:0}
+  .menu{display:flex;align-items:center;gap:2px}.menu-item{display:flex;align-items:center;gap:5px;padding:4px 9px;border-radius:3px;cursor:pointer;color:var(--ink)}
+  .menu-item:hover{background:var(--hover);outline:1px solid var(--hover-line)}.caret{font-size:9px;color:var(--ink-soft)}
+  .qicon{width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:3px;cursor:pointer;color:var(--icon-teal)}
+  .qicon:hover{background:var(--hover);outline:1px solid var(--hover-line)}.sep{width:1px;height:16px;background:var(--line);margin:0 5px}
+  .title-name{position:absolute;left:0;right:0;text-align:center;color:var(--ink-soft);pointer-events:none}.win-controls{margin-left:auto;display:flex;height:100%;z-index:2}
+  .win-btn{width:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink-soft)}.win-btn:hover{background:var(--chrome-2)}
+  .win-btn.close:hover{background:oklch(0.6 0.2 25);color:white}
+  .tabstrip{display:flex;align-items:flex-end;background:var(--chrome);padding:0 6px;border-bottom:1px solid var(--line);height:26px;flex-shrink:0}
+  .tab{padding:5px 11px 6px;color:var(--ink-soft);cursor:pointer;border:1px solid transparent;border-bottom:none;border-radius:3px 3px 0 0;line-height:1;position:relative;top:1px;white-space:nowrap}
+  .tab:hover{background:var(--hover);color:var(--ink)}.tab.active{background:oklch(0.99 0.002 250);color:var(--accent);font-weight:600;border-color:var(--line);border-bottom:1px solid oklch(0.99 0.002 250)}
+  .tab.active::after{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--accent);border-radius:2px 2px 0 0}
+  .collapse{margin-left:6px;color:var(--ink-soft);align-self:center;cursor:pointer;padding-bottom:4px}.user-tag{margin-left:6px;color:var(--ink-soft);display:flex;align-items:center;gap:6px;padding-bottom:5px;white-space:nowrap}
+  .ribbon{display:flex;align-items:stretch;background:oklch(0.99 0.002 250);border-bottom:1px solid var(--line);padding:4px 2px 0;height:98px;flex-shrink:0;overflow-x:auto}
+  .group{display:flex;flex-direction:column;padding:0 5px 2px;position:relative;min-width:max-content}.group + .group{border-left:1px solid var(--line-soft)}
+  .group-body{display:flex;align-items:stretch;gap:1px;flex:1;padding:2px 2px 0}.group-title{text-align:center;font-size:10.5px;color:var(--ink-soft);padding:3px 4px 2px;margin-top:auto}
+  .btn-lg{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:3px;min-width:52px;max-width:82px;padding:5px 4px 3px;border:1px solid transparent;border-radius:4px;cursor:pointer;text-align:center;line-height:1.12;color:var(--ink);user-select:none}
+  .btn-lg .ic{width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:var(--icon-teal)}.btn-lg .lbl{font-size:11px}
+  .btn-lg:hover{background:var(--hover);border-color:var(--hover-line)}.btn-lg:active{background:var(--active-fill)}.btn-lg.launch{border-color:var(--accent);background:oklch(0.945 0.04 250)}
+  .btn-col{display:flex;flex-direction:column;justify-content:center;gap:1px;padding:1px 2px}.btn-sm{display:flex;align-items:center;gap:6px;padding:3px 8px 3px 5px;border:1px solid transparent;border-radius:3px;cursor:pointer;color:var(--ink);white-space:nowrap;user-select:none}
+  .btn-sm .ic{width:16px;height:16px;display:flex;align-items:center;justify-content:center;color:var(--icon-teal);flex-shrink:0}.btn-sm .lbl{font-size:11.5px}
+  .btn-sm:hover{background:var(--hover);border-color:var(--hover-line)}.btn-sm:active{background:var(--active-fill)}.btn-sm.on-sm{background:var(--active-fill);border-color:var(--hover-line)}
+  .disabled{color:var(--disabled)!important;cursor:default!important}.disabled .ic{color:var(--disabled)!important}.disabled:hover{background:transparent!important;border-color:transparent!important}
+  .field-col{display:flex;flex-direction:column;justify-content:center;gap:5px;padding:3px 4px}.field-row{display:flex;align-items:center;gap:6px;font-size:11.5px}.field-row label{color:var(--ink)}
+  .selectbox{display:flex;align-items:center;justify-content:space-between;gap:8px;height:22px;padding:0 4px 0 7px;background:white;border:1px solid var(--line);border-radius:2px;font-size:11.5px;cursor:pointer}
+  .selectbox:hover{border-color:var(--accent-line)}.selectbox > span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.selectbox .dd{width:16px;height:20px;display:flex;align-items:center;justify-content:center;background:var(--chrome);border-left:1px solid var(--line);margin-right:-4px;color:var(--ink-soft);flex-shrink:0}
+  .check{display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none;padding:1px 2px;border:1px solid transparent;border-radius:3px}.check:hover{background:var(--hover);border-color:var(--hover-line)}
+  .box{width:13px;height:13px;border:1px solid var(--line);background:white;border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0}.check.on .box{background:var(--accent);border-color:var(--accent);color:white}
+  .dropcaret{margin-left:2px;color:var(--ink-soft);font-size:9px}.placeholder{display:flex;align-items:center;gap:12px;padding:0 24px;color:var(--ink-soft)}
+  .placeholder .pic{width:40px;height:40px;border-radius:8px;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0}.placeholder b{color:var(--ink)}
+  .subbar{display:flex;align-items:center;gap:7px;background:var(--chrome);border-bottom:1px solid var(--line);padding:5px 8px;height:36px;flex-shrink:0}
+  .subbar .info{width:24px;height:24px;border-radius:50%;background:var(--accent);color:white;display:flex;align-items:center;justify-content:center;flex-shrink:0}.subbar label{color:var(--ink)}
+  .tool-ic{width:26px;height:24px;display:flex;align-items:center;justify-content:center;border:1px solid transparent;border-radius:3px;cursor:pointer;color:var(--icon-teal)}
+  .tool-ic:hover{background:var(--hover);border-color:var(--hover-line)}.tool-ic:active{background:var(--active-fill)}.vsep{width:1px;height:22px;background:var(--line);margin:0 3px}
+  .body{display:flex;flex:1;min-height:0}.toc{width:288px;flex-shrink:0;background:oklch(0.985 0.002 250);border-right:1px solid var(--line);display:flex;flex-direction:column}
+  .toc-head{display:flex;align-items:center;justify-content:space-between;background:var(--accent-soft);border-bottom:1px solid var(--line);padding:4px 6px 4px 9px;color:var(--ink)}.toc-head .h-ic{display:flex;gap:4px}
+  .toc-head .h-ic span{width:18px;height:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink-soft);border-radius:2px}.toc-head .h-ic span:hover{background:oklch(0.86 0.045 235)}
+  .toc-tree{padding:8px 6px}.tree-row{display:flex;align-items:center;gap:6px;padding:3px 4px;border-radius:3px;cursor:pointer}.tree-row:hover{background:var(--hover)}.tree-row .tw{width:12px;color:var(--ink-soft);font-size:9px}
+  .canvas{flex:1;min-width:0;display:flex;flex-direction:column;background:repeating-linear-gradient(0deg, oklch(0.99 0.002 250) 0 23px, oklch(0.965 0.003 250) 23px 24px)}
+  .maptoolbar{display:flex;align-items:center;gap:2px;background:var(--chrome);border-bottom:1px solid var(--line);padding:4px 6px;height:36px;overflow-x:auto}.mt-btn{display:flex;align-items:center;gap:3px;height:26px;padding:0 5px;border:1px solid transparent;border-radius:3px;cursor:pointer;color:var(--icon-teal);white-space:nowrap}
+  .mt-btn:hover{background:var(--hover);border-color:var(--hover-line)}.mt-btn:active{background:var(--active-fill)}.mt-btn.on{background:var(--active-fill);border-color:var(--hover-line)}.mt-btn .txt{font-size:11.5px;color:var(--ink)}.mt-btn .chev{color:var(--ink-soft);font-size:9px}
+  .filter-lbl{font-size:11.5px;color:var(--ink);margin:0 2px 0 4px}.count-txt{margin-left:auto;font-size:11.5px;color:var(--ink-soft);padding-right:6px;white-space:nowrap}.canvas-fill{flex:1}
+  .statusbar{height:26px;flex-shrink:0;background:var(--accent);color:white;display:flex;align-items:center;padding:0 12px;font-size:11.5px;gap:8px}.statusbar .tag{background:oklch(0.98 0.02 235);color:var(--accent);font-weight:600;padding:1px 7px;border-radius:3px;font-size:10.5px;letter-spacing:.02em}
+  .tt{position:fixed;z-index:80;max-width:320px;pointer-events:none;background:oklch(0.99 0.004 250);border:1px solid var(--line);box-shadow:0 6px 20px oklch(0.4 0.02 255 / .18);border-radius:5px;padding:8px 10px;font-size:11.5px;color:var(--ink);opacity:0;transform:translateY(3px);transition:opacity .12s ease-out, transform .18s cubic-bezier(.2,.8,.2,1)}
+  .tt.show{opacity:1;transform:translateY(0)}.tt .tt-title{font-weight:700;color:var(--accent);margin-bottom:3px;font-size:12px}.tt .tt-ref{margin-top:5px;color:var(--ink-soft);font-size:10.5px}
+  .backdrop{position:fixed;inset:0;background:oklch(0.2 0.02 250 / .32);display:none;align-items:center;justify-content:center;z-index:40}.backdrop.show{display:flex}.backdrop.nested{background:oklch(0.2 0.02 250 / .28);z-index:50}
+  .dialog{background:var(--dlg);border:1px solid oklch(0.55 0.03 250);border-radius:7px;box-shadow:0 24px 60px oklch(0.15 0.03 250 / .5);display:none;flex-direction:column;overflow:hidden;max-height:94vh;max-width:96vw}.dialog.active{display:flex}
+  .w-titlebar{height:38px;background:linear-gradient(oklch(0.995 0.001 250),oklch(0.97 0.003 250));border-bottom:1px solid var(--line-soft);display:flex;align-items:center;gap:9px;padding:0 6px 0 12px;flex-shrink:0}.w-titlebar .brand{width:16px;height:16px;flex-shrink:0}.w-titlebar .ttl{color:var(--ink-soft);font-size:13px}.w-titlebar .win{margin-left:auto;display:flex;gap:2px}.w-titlebar .win span{width:30px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:4px;cursor:pointer;color:var(--ink-soft)}.w-titlebar .win span:hover{background:var(--hover)}.w-titlebar .win span.x:hover{background:oklch(0.6 0.2 25);color:white}
+  .content{padding:16px;flex:1;overflow:auto;position:relative}.footer{display:flex;align-items:center;gap:8px;padding:12px 16px;border-top:1px solid var(--line-soft);flex-shrink:0}.footer .spacer{flex:1}
+  fieldset{border:1px solid var(--w-line);border-radius:4px;margin:0;padding:12px 14px 14px}fieldset legend{padding:0 5px;color:var(--ink);font-size:12.5px}.sub-fs{border:1px solid var(--w-line);border-radius:4px;padding:10px 12px 12px}.sub-fs .legend{font-size:12px;color:var(--ink);margin:-19px 0 6px;background:var(--dlg);display:inline-block;padding:0 5px}
+  .wbtn{min-width:84px;height:30px;padding:0 14px;background:linear-gradient(oklch(0.995 0.001 250),oklch(0.955 0.003 250));border:1px solid oklch(0.72 0.02 250);border-radius:4px;cursor:pointer;font-size:12.5px;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;gap:7px}.wbtn:hover{border-color:var(--w-accent);background:oklch(0.95 0.04 255)}.wbtn:active{background:oklch(0.9 0.05 255)}.wbtn.default{border-color:var(--w-accent);box-shadow:0 0 0 1px var(--w-accent) inset}.wbtn.dis{color:var(--disabled);border-color:var(--line-soft);background:oklch(0.965 0.002 250);cursor:default;box-shadow:none}.wbtn.dis:hover{border-color:var(--line-soft);background:oklch(0.965 0.002 250)}
+  .radio,.chk{display:inline-flex;align-items:center;gap:7px;cursor:pointer;user-select:none}.radio .dot{width:15px;height:15px;border-radius:50%;border:1.5px solid oklch(0.6 0.02 250);background:white;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}.radio.on .dot{border-color:var(--w-accent)}.radio.on .dot::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--w-accent)}.chk .cb{width:15px;height:15px;border-radius:3px;border:1.5px solid oklch(0.6 0.02 250);background:white;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;color:white}.chk.on .cb{background:var(--w-accent);border-color:var(--w-accent)}.radio.dis,.chk.dis{cursor:default;color:var(--field-disabled-ink)}.radio.dis .dot,.chk.dis .cb{border-color:oklch(0.78 0.01 250);background:oklch(0.94 0.003 250)}
+  .inp{height:28px;border:1px solid var(--w-line);border-radius:3px;background:white;padding:0 8px;font-size:12.5px;color:var(--ink);width:100%}.inp:focus{outline:none;border-color:var(--w-accent);box-shadow:0 0 0 2px oklch(0.55 0.14 255 / .18)}.inp.ro{background:oklch(0.985 0.002 250);color:var(--ink)}.inp.dis{background:oklch(0.945 0.003 250);color:var(--field-disabled-ink);border-color:var(--line-soft)}
+  .selwrap{position:relative;display:inline-block;width:100%}.selwrap .inp{padding-right:26px}.selwrap .cv{position:absolute;right:1px;top:1px;bottom:1px;width:22px;background:var(--chrome);border-left:1px solid var(--w-line);display:flex;align-items:center;justify-content:center;color:var(--ink-soft);border-radius:0 3px 3px 0;pointer-events:none}.selwrap.dis .cv{color:var(--disabled)}
+  label.lbl{color:var(--ink)}.muted{color:var(--ink-soft)}.costlink{color:var(--link)}a.wlink{color:var(--link);text-decoration:none}a.wlink:hover{text-decoration:underline}
+  .grid{border:1px solid var(--w-line);background:white;border-radius:2px;overflow:hidden}.grid .ghead{display:flex;background:linear-gradient(oklch(0.99 0.001 250),oklch(0.955 0.003 250));border-bottom:1px solid var(--w-line)}.grid .ghead .gc{padding:6px 8px;font-weight:600;color:var(--ink);border-right:1px solid var(--line-soft);text-align:center;font-size:12px}.grid .grow{display:flex;border-bottom:1px solid var(--line-soft)}.grid .grow:hover{background:oklch(0.97 0.02 255)}.grid .grow.sel{background:var(--sel)}.grid .gc{padding:6px 8px;border-right:1px solid var(--line-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.grid .gc.c{text-align:center}
+  .gear{width:22px;height:22px;border:1px solid var(--w-line);border-radius:3px;background:linear-gradient(oklch(0.995 0.001 250),oklch(0.96 0.003 250));display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink-soft)}.gear:hover{border-color:var(--w-accent);color:var(--w-accent)}
+  .grid-toolbar{display:flex;align-items:center;gap:6px;margin-bottom:8px}.grid-toolbar .ti{width:26px;height:24px;border:1px solid transparent;border-radius:3px;display:flex;align-items:center;justify-content:center;color:var(--icon-teal);cursor:pointer}.grid-toolbar .ti:hover{background:var(--hover);border-color:var(--hover-line)}
+  .plusmin{display:flex;flex-direction:column;gap:6px}.plusmin .pm{width:30px;height:26px;border:1px solid var(--w-line);border-radius:4px;background:linear-gradient(oklch(0.995 0.001 250),oklch(0.96 0.003 250));display:flex;align-items:center;justify-content:center;cursor:pointer}.plusmin .pm.add{color:oklch(0.55 0.16 145)}.plusmin .pm.rem{color:var(--ink-soft)}.plusmin .pm:hover{border-color:var(--w-accent)}
+  .side-btns{display:flex;flex-direction:column;gap:8px}.side-btns .sb{display:flex;align-items:center;gap:9px;height:34px;padding:0 12px;border:1px solid var(--w-line);border-radius:4px;background:linear-gradient(oklch(0.995 0.001 250),oklch(0.96 0.003 250));cursor:pointer;color:var(--ink)}.side-btns .sb:hover{border-color:var(--w-accent);background:oklch(0.95 0.04 255)}.side-btns .sb.dis{color:var(--disabled);cursor:default;background:oklch(0.965 0.002 250);border-color:var(--line-soft)}.side-btns .sb.dis:hover{border-color:var(--line-soft);background:oklch(0.965 0.002 250)}.side-btns .sb .ic{width:18px;display:flex;justify-content:center;flex-shrink:0}
+  .nailbtn{width:30px;height:28px;border:1px solid var(--w-line);border-radius:4px;background:linear-gradient(oklch(0.995 0.001 250),oklch(0.96 0.003 250));display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:var(--w-accent)}.nailbtn:hover{border-color:var(--w-accent);background:oklch(0.95 0.04 255)}
+  .form-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}.toast{position:fixed;left:50%;bottom:44px;transform:translateX(-50%);background:oklch(0.28 0.03 250);color:white;padding:11px 18px;border-radius:8px;box-shadow:0 10px 30px oklch(0.15 0.03 250 / .5);z-index:90;display:flex;align-items:center;gap:10px;opacity:0;transition:opacity .2s, transform .3s cubic-bezier(.2,.8,.2,1);pointer-events:none;max-width:560px}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}.toast .dot{width:8px;height:8px;border-radius:50%;background:oklch(0.7 0.16 145);flex-shrink:0}
+  .sym{width:28px;height:28px;position:relative;display:inline-flex;align-items:center;justify-content:center}
+  .sym svg{display:block}
+</style>
+</head>
+<body>
+  <div class="titlebar-app">
+    <div class="menu">
+      <div class="menu-item" data-tip="File|Open, save, import and export projects, layers and settings.|Tool Guide p1"><i data-lucide="file" width="14" height="14"></i>File</div>
+      <div class="menu-item" data-tip="View|Toggle panels, windows and display options.|Tool Guide p1">View <span class="caret">&#9662;</span></div>
+      <div class="menu-item" data-tip="Options|Application preferences, units and default behaviors.|Tool Guide p1">Options <span class="caret">&#9662;</span></div>
+    </div>
+    <div class="sep"></div>
+    <div class="qicon" data-tip="Table of Contents|Show or hide the Table of Contents panel.|Tool Guide p1"><i data-lucide="panel-left" width="15" height="15"></i></div>
+    <div class="qicon" data-tip="Help Context|Click this, then click any LP360 control to open context help.|Tool Guide p1"><i data-lucide="help-circle" width="15" height="15"></i></div>
+    <div class="title-name">Practice1 - LP360</div>
+    <div class="win-controls">
+      <div class="win-btn" data-tip="Minimize|Minimize the window."><i data-lucide="minus" width="15" height="15"></i></div>
+      <div class="win-btn" data-tip="Restore|Restore / maximize the window."><i data-lucide="square" width="12" height="12"></i></div>
+      <div class="win-btn close" data-tip="Close|Close LP360."><i data-lucide="x" width="16" height="16"></i></div>
+    </div>
+  </div>
+  <div class="tabstrip" id="tabstrip"></div>
+  <div class="ribbon" id="ribbon"></div>
+  <div class="subbar">
+    <div class="info" data-tip="Identify Active LAS Layer|Show the active LAS layer and related quick tools.|Tool Guide p1"><i data-lucide="info" width="15" height="15"></i></div>
+    <label>Active Las Layer:</label>
+    <div class="selectbox" style="min-width:200px" data-tip="Active LAS Layer|Choose which LAS layer map tools and edits apply to.|Tool Guide p1, p5"><span>Triana_LAS_C250328_194323</span><span class="dd">&#9662;</span></div>
+    <div class="vsep"></div>
+    <div class="tool-ic" data-tip="Single LAS Mode|Restrict actions and display to the active LAS layer.|Tool Guide p1, p5"><i data-lucide="leaf" width="16" height="16"></i></div>
+    <div class="tool-ic" data-tip="Center Viewer on Mouse Click|Center the map or viewer where you click.|Tool Guide p1"><i data-lucide="plus-square" width="16" height="16"></i></div>
+    <div class="tool-ic" data-tip="Toggle Profile View|Open or close the profile viewer.|Tool Guide p1"><i data-lucide="git-compare" width="16" height="16"></i></div>
+    <div class="tool-ic" data-tip="Toggle 3D View|Open or close the 3D viewer.|Tool Guide p1"><i data-lucide="hexagon" width="16" height="16"></i></div>
+    <div class="tool-ic" data-tip="Immersive Window|Launch the immersive viewer.|Tool Guide p1, p4"><i data-lucide="panels-top-left" width="16" height="16"></i></div>
+  </div>
+  <div class="body">
+    <div class="toc">
+      <div class="toc-head">
+        <span>Table Of Contents - LP360</span>
+        <div class="h-ic">
+          <span data-tip="Auto Hide|Pin or auto-hide this panel."><i data-lucide="pin" width="13" height="13"></i></span>
+          <span data-tip="Close Panel|Close the Table of Contents."><i data-lucide="x" width="14" height="14"></i></span>
+        </div>
+      </div>
+      <div class="toc-tree">
+        <div class="tree-row" data-tip="Map ( All Layers )|Root of the layer tree. Toggle to show or hide every layer.">
+          <span class="tw">&#9662;</span>
+          <span class="box on" style="width:13px;height:13px"><i data-lucide="check" width="10" height="10"></i></span>
+          <i data-lucide="map" width="15" height="15" style="color:var(--icon-teal)"></i>
+          <span><b>Map ( All Layers )</b></span>
+        </div>
+      </div>
+    </div>
+    <div class="canvas">
+      <div class="maptoolbar" id="maptoolbar"></div>
+      <div class="canvas-fill"></div>
+    </div>
+  </div>
+  <div class="statusbar"><span class="tag">READY</span><span id="statusMsg">Tool-guide version loaded. Hover anything for the real LP360 label and reference.</span></div>
+  <div class="tt" id="tooltip"><div class="tt-title"></div><div class="tt-body"></div><div class="tt-ref"></div></div>
+
+  <div class="backdrop" id="wizard">...WIZARD_PLACEHOLDER...</div>
+  <div class="backdrop nested" id="nailBackdrop">...NAIL_PLACEHOLDER...</div>
+  <div class="toast" id="toast"><span class="dot"></span><span id="toastMsg"></span></div>
+
+<script>
+const CHECK = '<i data-lucide="check" width="10" height="10"></i>';
+const USER = 'bryce.drachenberg@uvt.us ( Unmanned Vehicle Technologies, LLC (UVT) ) [ 328.00 ]';
+const esc = s => (s||'').replace(/"/g,'&quot;');
+const lbl = s => (s||'').replace(/\n/g,'<br>');
+
+function svgIcon(type){
+  const c = {
+    teal:'var(--icon-teal)', blue:'var(--icon-blue)', green:'var(--icon-green)', red:'var(--icon-red)', yellow:'var(--icon-yellow)', ink:'var(--ink)'
+  };
+  const s = (inner) => `<span class="sym">${inner}</span>`;
+  switch(type){
+    case 'zoom-in': return s(`<svg width="28" height="28" viewBox="0 0 28 28"><circle cx="11" cy="11" r="8" fill="none" stroke="${c.ink}" stroke-width="2.2"/><path d="M17.5 17.5 L24 24" stroke="${c.blue}" stroke-width="2.4"/><path d="M11 7 v8 M7 11 h8" stroke="${c.blue}" stroke-width="2.2" stroke-linecap="round"/></svg>`);
+    case 'zoom-out': return s(`<svg width="28" height="28" viewBox="0 0 28 28"><circle cx="11" cy="11" r="8" fill="none" stroke="${c.ink}" stroke-width="2.2"/><path d="M17.5 17.5 L24 24" stroke="${c.blue}" stroke-width="2.4"/><path d="M7 11 h8" stroke="${c.blue}" stroke-width="2.2" stroke-linecap="round"/></svg>`);
+    case 'continuous-pan': return s(`<svg width="28" height="28" viewBox="0 0 28 28"><circle cx="11" cy="11" r="7.8" fill="none" stroke="${c.ink}" stroke-width="1.8"/><path d="M18 18 L24 24" stroke="${c.blue}" stroke-width="2.2"/><path d="M11 7 V15 M7 11 H15" stroke="${c.blue}" stroke-width="1.8" opacity=".8"/><path d="M5 5 L17 17" stroke="${c.red}" stroke-width="1.8" opacity=".85"/></svg>`);
+    case 'pan-hand': return s(`<svg width="28" height="28" viewBox="0 0 28 28"><path d="M9 15 V8.5c0-1 1.4-1.2 1.7-.1l.6 4.1V6.8c0-1 1.5-1.2 1.8-.1l.6 4V6c0-1 1.5-1.1 1.8 0l.7 5V7.5c0-.9 1.5-1 1.7 0l.1 8.2c0 3.7-2.5 6.8-6.4 6.8-2.7 0-4.7-1.3-5.9-3.8L4.9 14c-.4-.9.7-1.6 1.4-.9L9 15z" fill="none" stroke="${c.ink}" stroke-width="1.7" stroke-linejoin="round"/></svg>`);
+    case 'fit-world': return s(`<svg width="28" height="28" viewBox="0 0 28 28"><circle cx="14" cy="14" r="8.8" fill="${c.green}" opacity=".9"/><path d="M14 5.2c2.7 2.4 4.3 5.3 4.3 8.8s-1.6 6.4-4.3 8.8c-2.7-2.4-4.3-5.3-4.3-8.8s1.6-6.4 4.3-8.8z" fill="none" stroke="${c.ink}" stroke-width="1.2"/><path d="M5.4 14h17.2M8 9.5c4.2 1.2 7.8 1.2 12 0M8 18.5c4.2-1.2 7.8-1.2 12 0" stroke="${c.ink}" stroke-width="1.2"/></svg>`);
+    case 'measure': return s(`<svg width="28" height="28" viewBox="0 0 28 28"><rect x="4" y="14" width="20" height="6" rx="1.5" fill="${c.yellow}" stroke="${c.ink}" stroke-width="1.2"/><path d="M7 14v3 M10 14v2 M13 14v3 M16 14v2 M19 14v3 M22 14v2" stroke="${c.ink}" stroke-width="1.2"/></svg>`);
+    case 'prev-extent': return s(`<svg width="28" height="28" viewBox="0 0 28 28"><path d="M23 14H8" stroke="${c.blue}" stroke-width="3" stroke-linecap="round"/><path d="M13 8l-6 6 6 6" fill="none" stroke="${c.blue}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>`);
+    case 'next-extent': return s(`<svg width="28" height="28" viewBox="0 0 28 28"><path d="M5 14h15" stroke="${c.blue}" stroke-width="3" stroke-linecap="round"/><path d="M15 8l6 6-6 6" fill="none" stroke="${c.blue}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>`);
+    case 'filter': return s(`<svg width="28" height="28" viewBox="0 0 28 28"><path d="M4 6h20l-7.5 8v7l-5 2v-9z" fill="${c.yellow}" stroke="${c.ink}" stroke-width="1.3" stroke-linejoin="round"/></svg>`);
+    case 'elevation': return s(`<svg width="28" height="28" viewBox="0 0 28 28"><defs><linearGradient id="g1" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#2f6bff"/><stop offset=".5" stop-color="#2ecc71"/><stop offset="1" stop-color="#ffd54d"/></linearGradient></defs><circle cx="14" cy="14" r="9" fill="url(#g1)" stroke="${c.ink}" stroke-width="1.1"/></svg>`);
+    case 'points': return s(`<svg width="28" height="28" viewBox="0 0 28 28"><g fill="${c.red}"><circle cx="8" cy="8" r="2"/><circle cx="14" cy="10" r="2" fill="#1abc9c"/><circle cx="20" cy="8" r="2" fill="#3498db"/><circle cx="9" cy="17" r="2" fill="#f1c40f"/><circle cx="17" cy="17" r="2" fill="#2ecc71"/></g></svg>`);
+    case 'contours-off': return s(`<svg width="28" height="28" viewBox="0 0 28 28"><circle cx="14" cy="14" r="9" fill="none" stroke="${c.red}" stroke-width="2.2"/><path d="M8 20L20 8" stroke="${c.red}" stroke-width="2.2"/></svg>`);
+    case 'breakline': return s(`<svg width="28" height="28" viewBox="0 0 28 28"><rect x="4" y="4" width="20" height="20" fill="#111"/><path d="M9 23V5M14 23V5M19 23V5" stroke="#fff" stroke-width="1.2" opacity=".7"/><path d="M4 18c5-2 7-8 12-8 3 0 5 1 8 3" fill="none" stroke="${c.red}" stroke-width="2.2"/></svg>`);
+    case 'intensity': return s(`<svg width="28" height="28" viewBox="0 0 28 28"><path d="M14 4l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#111"/><path d="M14 4l1.9 4.5L20 10l-4.1 1.7L14 16l-1.9-4.3L8 10l4.1-1.5z" fill="#fff" opacity=".88"/></svg>`);
+    case 'blend-class': return s(`<svg width="28" height="28" viewBox="0 0 28 28"><rect x="5" y="5" width="8" height="8" fill="#f4d03f"/><rect x="15" y="5" width="8" height="8" fill="#2ecc71"/><rect x="5" y="15" width="8" height="8" fill="#e74c3c"/><rect x="15" y="15" width="8" height="8" fill="#3498db"/><path d="M9 14h10M14 9v10" stroke="${c.ink}" stroke-width="1.2"/></svg>`);
+    case 'hillshade': return s(`<svg width="28" height="28" viewBox="0 0 28 28"><path d="M5 22l6-11 5 5 4-8 3 14z" fill="url(#shade)"/><defs><linearGradient id="shade" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f6bff"/><stop offset="1" stop-color="#ffe06a"/></linearGradient></defs></svg>`);
+    case 'draw-3d': return s(`<svg width="28" height="28" viewBox="0 0 28 28"><path d="M8 9l6-4 6 4-6 4zM8 9v8l6 4v-8M20 9v8l-6 4" fill="none" stroke="${c.ink}" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 9l6 4 6-4" stroke="${c.blue}" stroke-width="1.5"/></svg>`);
+    case 'draw-profile': return s(`<svg width="28" height="28" viewBox="0 0 28 28"><rect x="4" y="5" width="8" height="18" fill="none" stroke="${c.ink}" stroke-width="1.3"/><path d="M14 21l4-9 4 4" fill="none" stroke="#e74c3c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 20.5L10.5 8.5" stroke="${c.iconTeal||'#3aa7b8'}" stroke-width="1.6"/></svg>`);
+    case 'force-100': return s(`<svg width="28" height="28" viewBox="0 0 28 28"><path d="M14 4l8 16H6z" fill="none" stroke="${c.red}" stroke-width="1.8"/><text x="14" y="18" text-anchor="middle" font-size="8" fill="${c.ink}" font-family="Segoe UI">100</text></svg>`);
+    case 'point-info': return s(`<svg width="28" height="28" viewBox="0 0 28 28"><text x="8" y="12" font-size="7" fill="${c.red}" font-family="Segoe UI">#</text><text x="16" y="12" font-size="7" fill="${c.ink}" font-family="Segoe UI">Points</text><text x="8" y="20" font-size="7" fill="${c.red}" font-family="Segoe UI">#</text><text x="16" y="20" font-size="7" fill="${c.ink}" font-family="Segoe UI">TIN</text></svg>`);
+    case 'live-view': return s(`<svg width="28" height="28" viewBox="0 0 28 28"><path d="M4 6h20l-7.5 8v7l-5 2v-9z" fill="${c.yellow}" stroke="${c.ink}" stroke-width="1.3" stroke-linejoin="round"/></svg>`);
+    case 'identify': return s(`<svg width="28" height="28" viewBox="0 0 28 28"><circle cx="14" cy="14" r="9" fill="${c.blue}"/><text x="14" y="18" text-anchor="middle" font-size="16" fill="white" font-family="Segoe UI" font-weight="700">i</text></svg>`);
+    case 'active-las': return s(`<svg width="28" height="28" viewBox="0 0 28 28"><text x="7" y="13" font-size="14" fill="${c.ink}" font-family="Segoe UI" font-weight="700">1</text><path d="M11 19h8l2-4H13z" fill="${c.green}" stroke="${c.ink}" stroke-width="1.1"/></svg>`);
+    default:return null;
+  }
+}
+function iconMarkup(name, fallback='square'){
+  return svgIcon(name) || `<i data-lucide="${fallback}" width="20" height="20"></i>`;
+}
+
+const MAP_TOOLS = [
+  {k:'zoom-in', label:'Zoom In', tip:'Zoom In|Zoom in on the map view.|Tool Guide p1'},
+  {k:'zoom-out', label:'Zoom Out', tip:'Zoom Out|Zoom out from the map view.|Tool Guide p1'},
+  {k:'continuous-pan', label:'Continuous Zoom & Pan', tip:'Continuous Zoom & Pan|Continuous zoom and pan navigation mode.|Tool Guide p1'},
+  {k:'pan-hand', label:'Pan', tip:'Pan|Pan the current map view.|Tool Guide p1'},
+  {k:'fit-world', label:'Fit World', tip:'Fit World View|Fit the map to full world or data extent.|Tool Guide p1'},
+  {k:'measure', label:'Measure', tip:'Measure|Measure distance or area in the map view.|Tool Guide p1'},
+  {k:'prev-extent', label:'Previous Extent', tip:'Previous Extent|Return to the previous map extent.|Tool Guide p1'},
+  {k:'next-extent', label:'Next Extent', tip:'Next Extent|Move to the next saved map extent.|Tool Guide p1'},
+  {k:'active-las', label:'Active LAS Layer', tip:'Active LAS Layer|Display or change the active LAS layer.|Tool Guide p1, p5'},
+  {k:'active-las', label:'Single LAS Mode', tip:'Single LAS Mode|Restrict display and actions to the active LAS layer.|Tool Guide p1, p5'},
+  {k:'filter', label:'View Filter', tip:'Filter|Apply a point display filter.|Tool Guide p1'},
+  {k:'elevation', label:'Legend Types (Elevation)', tip:'Legend Types|Choose point coloring such as Elevation, Classification, RGB, Intensity, GPS Time, Scan Angle and more.|Tool Guide p1, p2'},
+  {k:'points', label:'Draw Types (Draw Points)', tip:'Draw Types|Switch between Points, Draw TIN Surface, Draw Points on TIN Surface, Wireframe and Draw Points on Wireframe.|Tool Guide p1, p2'},
+  {k:'contours-off', label:'Display Contours', tip:'Contours|Show Contours, Smooth Contours or No Contours.|Tool Guide p1, p2'},
+  {k:'breakline', label:'Toggle Breakline Enforcement', tip:'Toggle Breakline Enforcement|Enable or disable breakline enforcement in supported views.|Tool Guide p1, p3'},
+  {k:'intensity', label:'Apply Intensity', tip:'Apply Intensity|Shade or color points using intensity values.|Tool Guide p1, p3, p4'},
+  {k:'blend-class', label:'Blend Classification', tip:'Blend Classification|Blend classification colors into the active legend mode.|Tool Guide p1, p3, p4'},
+  {k:'hillshade', label:'Toggle Hillshade', tip:'Toggle Hillshade|Enable hillshade rendering when supported.|Tool Guide p1, p3'},
+  {k:'draw-3d', label:'Draw 3D Window Extent', tip:'Draw 3D Window Extent|Draw a box and open that area in the 3D viewer.|Tool Guide p1, p10'},
+  {k:'draw-profile', label:'Draw Profile Line', tip:'Draw Profile Line|Draw a line to create a profile view.|Tool Guide p1, p10'},
+  {k:'force-100', label:'Force 100% Resolution', tip:'Force 100% Resolution|Force viewers to render at full resolution.|Tool Guide p1, p3'},
+  {k:'point-info', label:'Point Information', tip:'Point Information|Show point count and TIN stats for the current view.|Tool Guide p1'}
+];
+
+const TABS = [
+  { name:'Project', tip:'Project|Create and configure the project, sources and coordinate systems.|Tool Guide p5', groups:[
+    {title:'Home', items:[
+      {t:'lg', l:'New', icon:'file-plus', tip:'New|Create a new LP360 project.|Tool Guide p5'},
+      {t:'lg', l:'Open', icon:'folder-open', tip:'Open|Open a project, Explorer Package, LAS, Raster or Feature files.|Tool Guide p1, p5'},
+      {t:'lg', l:'Save\nProject', icon:'save', tip:'Save Project|Save the current project.|Tool Guide p1, p5'},
+      {t:'lg', l:'Close\nProject', icon:'x-square', tip:'Close Project|Close the current project.|Tool Guide p1, p5'},
+      {t:'list', b:[
+        {l:'Save Project As', icon:'copy', tip:'Save Project As|Save the current project under a new name.|Tool Guide p1, p5'},
+        {l:'Startup Dialog', icon:'panel-top', tip:'Open Startup Dialog|Show the startup dialog.|Tool Guide p1, p5'},
+        {l:'Metadata', icon:'info', tip:'Project Metadata|Edit project metadata.|Tool Guide p1, p5'}
+      ]}
+    ]},
+    {title:'Layers', items:[
+      {t:'lg', l:'LAS File\nAnalyst', icon:'file-search', tip:'LAS File Analyst|Inspect LAS file headers, scan columns, analyze columns, repair columns and edit columns.|Tool Guide p5'},
+      {t:'fields', r:[
+        {t:'select', v:'Triana_LAS_C250328_194323', w:160, tip:'Active LAS Layer|Select the active LAS layer.|Tool Guide p5'},
+        {t:'check', l:'Single LAS Mode', tip:'Single LAS Mode|Restrict to the active LAS layer.|Tool Guide p5'},
+        {t:'check', l:'Active LAS Properties', on:true, tip:'Active LAS Properties|Open active LAS layer properties.|Tool Guide p5'}
+      ]}
+    ]},
+    {title:'Import', items:[
+      {t:'lg', l:'Add\nFiles', icon:'folder-plus', tip:'Add Files|Add LAS files to the project.|Tool Guide p5'},
+      {t:'lg', l:'Add\nWMS', icon:'globe', tip:'Add WMS|Add a WMS layer.|Tool Guide p5'},
+      {t:'lg', l:'Import Explorer\nPackage', icon:'package', tip:'Import Explorer Package|Import an Explorer Package.|Tool Guide p1, p5'},
+      {t:'lg', l:'Import\nfrom ASCII', icon:'file-text', tip:'Import from ASCII XYZ+|Import points from ASCII text.|Tool Guide p1, p5'},
+      {t:'lg', l:'Import\nMG4', icon:'file-archive', tip:'Import from MG4|Import MG4 data.|Tool Guide p1, p5'}
+    ]},
+    {title:'Export', items:[
+      {t:'lg', l:'Export\nWizard', icon:'file-output', tip:'Export Wizard|Launch the export wizard.|Tool Guide p5'},
+      {t:'lg', l:'Create\nLPLAS', icon:'database-zap', tip:'Create LPLAS|Create an LPLAS dataset or layer.|Tool Guide p1, p5'},
+      {t:'lg', l:'Export\nLandXML TIN', icon:'file-code', tip:'Export LandXML TIN|Export the surface as LandXML TIN.|Tool Guide p5'}
+    ]},
+    {title:'Project Manager', items:[
+      {t:'lg', l:'Manager\nSettings', icon:'settings', tip:'Manager Settings|Configure the project manager settings.|Tool Guide p5'},
+      {t:'list', b:[
+        {l:'Child Project', icon:'git-branch', tip:'Child Projects|Manage child projects.|Tool Guide p1, p5'},
+        {l:'Re-Path', icon:'route', tip:'Re-Path Project|Repair or update file paths in the project.|Tool Guide p1, p5'},
+        {l:'Coordinate System Catalog', icon:'compass', tip:'Coordinate System Utility / Catalog|Manage coordinate systems.|Tool Guide p1, p5'}
+      ]}
+    ]},
+    {title:'Images', items:[{t:'lg', l:'Image\nExplorer', icon:'images', tip:'Image Explorer|Open the Image Explorer dialog.|Tool Guide p5, p6'}]}
+  ]},
+  { name:'Sensor', tip:'Sensor|Drone/Land licensed tools for importing and processing cycles.|Tool Guide p7', groups:[
+    {title:'Import', items:[{t:'lg', l:'Cycle\nImport', icon:'download', tip:'Cycle Import|Import a sensor cycle into the project.|Tool Guide p7'}]},
+    {title:'Cycle Processing', items:[
+      {t:'fields', r:[
+        {t:'select', label:'Active Cycle:', v:'C250328_194323', w:150, tip:'Active Cycle|Set the active cycle for processing.|Tool Guide p7'},
+        {t:'check', l:'Update Utility', tip:'Update Utility|Check the update utility for sensor packages.|Tool Guide p7'},
+        {t:'check', l:'Single Cycle Mode', tip:'Single Cycle Mode|Limit work to the active cycle.|Tool Guide p7'}
+      ]},
+      {t:'lg', l:'Auto Create\nFlight Lines', icon:'git-commit-horizontal', tip:'Auto Create Flight Lines|Automatically generate flight lines from the cycle.|Tool Guide p7'},
+      {t:'lg', l:'Sensor\nProcessing', icon:'clipboard-list', tip:'Sensor Processing|Run sensor processing for the selected cycle.|Tool Guide p7'},
+      {t:'lg', l:'Trajectory\nProcessing', icon:'route', launch:true, tip:'Trajectory Processing|Launch the trajectory processing workflow and POSPac wizard.|Tool Guide p7'},
+      {t:'lg', l:'Geocoding', icon:'map-pinned', tip:'Geocoding|Convert trajectory and sensor data to spatially referenced output.|Tool Guide p7'},
+      {t:'list', b:[
+        {l:'EXIF tags/EO', icon:'tag', d:true, tip:'EXIF tags/EO|Write camera EXIF tags and exterior orientation.|Tool Guide p7'},
+        {l:'Colorize', icon:'palette', d:true, tip:'Colorize|Colorize point cloud data from imagery.|Tool Guide p7'},
+        {l:'Export photo Package', icon:'package', d:true, tip:'Export photo Package|Export the photo package for the cycle.|Tool Guide p7'}
+      ]},
+      {t:'list', b:[
+        {l:'Trajectory Report', icon:'file-bar-chart', d:true, tip:'Trajectory Report|Generate a trajectory report.|Tool Guide p7'},
+        {l:'Trajectory Plot', icon:'line-chart', d:true, tip:'Trajectory Plot|Open the trajectory plot.|Tool Guide p7'},
+        {l:'Pilot Log File', icon:'notebook-tabs', d:true, tip:'Pilot Log File|Open or attach the pilot log file.|Tool Guide p7'}
+      ]}
+    ]},
+    {title:'Processing', items:[
+      {t:'lg', l:'Strip\nAlign', icon:'align-vertical-justify-center', tip:'Strip Align|Align overlapping strips.|Tool Guide p7'},
+      {t:'lg', l:'Ortho\nMapping', icon:'map', tip:'Ortho Mapping|Generate ortho mapping products.|Tool Guide p7'},
+      {t:'lg', l:'Agisoft Ortho\nMapping', icon:'layers-3', tip:'Agisoft Ortho Mapping|Run Agisoft-based ortho mapping.|Tool Guide p7'},
+      {t:'lg', l:'Post\nProcessing', icon:'cpu', tip:'Post Processing|Run additional post processing tools.|Tool Guide p7'}
+    ]},
+    {title:'Feature Edit', items:[
+      {t:'lg', l:'Manual\nFlight Lines', icon:'spline', tip:'Manual Flight Lines|Edit flight lines manually.|Tool Guide p7'},
+      {t:'lg', l:'Select/Edit\nLasso', icon:'lasso', tip:'Select/Edit Lasso|Select features with a lasso.|Tool Guide p7'},
+      {t:'list', b:[
+        {l:'Select/Edit Feature', icon:'mouse-pointer-2', tip:'Select/Edit Feature|Select or edit a feature.|Tool Guide p7'},
+        {l:'Select/Edit Polygon', icon:'pentagon', tip:'Select/Edit Polygon|Select with a polygon.|Tool Guide p7'},
+        {l:'Delete Features', icon:'x', tip:'Delete Features|Delete selected features.|Tool Guide p7'}
+      ]},
+      {t:'list', b:[
+        {l:'Undo', icon:'undo-2', d:true, tip:'Undo|Undo the last edit.|Tool Guide p7'},
+        {l:'Redo', icon:'redo-2', d:true, tip:'Redo|Redo the last undone edit.|Tool Guide p7'},
+        {l:'Save Edits', icon:'save', d:true, tip:'Save Edits|Save feature edits.|Tool Guide p7'},
+        {l:'Discard Edits', icon:'trash-2', d:true, tip:'Discard Edits|Discard unsaved edits.|Tool Guide p7'}
+      ]}
+    ]},
+    {title:'Archive', items:[{t:'lg', l:'Archive\nManager', icon:'archive', tip:'Archive Manager|Manage archived data.|Tool Guide p7'}]},
+    {title:'Utilities', items:[
+      {t:'list', b:[
+        {l:'Survey Nail Manager', icon:'map-pin', tip:'Survey Nail Manager|Manage survey nail definitions used by trajectory processing.|Tool Guide p7'},
+        {l:'LiDAR Calibration', icon:'radar', tip:'LiDAR Calibration|Open the LiDAR calibration utility.|Tool Guide p7'},
+        {l:'Camera Calibration', icon:'camera', tip:'Camera Calibration|Open the camera calibration tool.|Tool Guide p7'}
+      ]},
+      {t:'list', b:[
+        {l:'Live Stream', icon:'video', tip:'Live Stream|Open the live stream utility.|Tool Guide p7'},
+        {l:'DJI PPK Utility', icon:'person-standing', tip:'DJI PPK Utility|Launch the DJI PPK utility.|Tool Guide p7'},
+        {l:'540 Data Copy', icon:'clipboard-copy', tip:'540 Data Copy|Copy 540 data from sensor media.|Tool Guide p7'}
+      ]}
+    ]},
+    {title:'Job', items:[{t:'lg', l:'Job\nManager', icon:'list-checks', tip:'Job Manager|Open the Job Manager dialog.|Tool Guide p1, p7, p10'}]}
+  ]},
+  { name:'Photo', tip:'Photo|Viewer-style image and support tools.|Tool Guide p6', groups:[
+    {title:'Home', items:[
+      {t:'lg', l:'New', icon:'file-plus', tip:'New|Create a new project or viewer session.|Tool Guide p6'},
+      {t:'lg', l:'Open', icon:'folder-open', tip:'Open|Open a project or image set.|Tool Guide p6'},
+      {t:'lg', l:'Save\nProject', icon:'save', tip:'Save Project|Save the current project.|Tool Guide p6'},
+      {t:'lg', l:'Close\nProject', icon:'x-square', tip:'Close Project|Close the current project.|Tool Guide p6'},
+      {t:'lg', l:'Save Project\nAs', icon:'copy', tip:'Save Project As|Save the project under a new name.|Tool Guide p6'}
+    ]},
+    {title:'Data', items:[
+      {t:'lg', l:'Sample\nData', icon:'cloud', tip:'Sample Data|Load sample data.|Tool Guide p6'},
+      {t:'lg', l:'Add\nFiles', icon:'folder-plus', tip:'Add Files|Add image or LAS files.|Tool Guide p6'},
+      {t:'lg', l:'Add\nWMS', icon:'globe', tip:'Add WMS|Add a WMS layer.|Tool Guide p6'}
+    ]},
+    {title:'View', items:[
+      {t:'lg', l:'Draw Profile\nLine', icon:'pen-line', tip:'Draw Profile Line|Create a profile from imagery or data.|Tool Guide p6'},
+      {t:'lg', l:'Draw 3D\nView', icon:'box', tip:'Draw 3D View|Draw a 3D view extent.|Tool Guide p6'},
+      {t:'lg', l:'Immersive\nView', icon:'panels-top-left', tip:'Immersive View|Open the immersive viewer.|Tool Guide p6'},
+      {t:'lg', l:'Image\nExplorer', icon:'images', tip:'Image Explorer|Open the Image Explorer dialog.|Tool Guide p6'}
+    ]},
+    {title:'Support', items:[
+      {t:'list', b:[
+        {l:'Getting Started', icon:'book-open-check', tip:'Getting Started|Open getting started material.|Tool Guide p6'},
+        {l:'Knowledge Base', icon:'book-open', tip:'Knowledge Base|Open the knowledge base.|Tool Guide p6'},
+        {l:'About', icon:'help-circle', tip:'About|Version and product info.|Tool Guide p6'},
+        {l:'License Manager', icon:'settings', tip:'License Manager|Open the license manager.|Tool Guide p6'},
+        {l:'Help', icon:'circle-help', tip:'Help|Open help documentation.|Tool Guide p6'}
+      ]}
+    ]}
+  ]},
+  { name:'Map', tip:'Map|Display, profile, 3D, navigation, grid and clipping tools.|Tool Guide p10, p11', groups:[
+    {title:'Display', items:[
+      {t:'lg', l:'Live\nView', icon:'filter', tip:'Live View|Live filtering display mode.|Tool Guide p10'},
+      {t:'lg', l:'Identify', icon:'info', tip:'Identify|Identify data under the cursor.|Tool Guide p10'}
+    ]},
+    {title:'Profile View', items:[
+      {t:'lg', l:'Draw Profile\nLine', icon:'pen-line', tip:'Draw Profile Line|Create a new profile line.|Tool Guide p10'},
+      {t:'lg', l:'Draw Profile\nBox', icon:'square-dashed', tip:'Draw Profile Box|Draw a profile box extent.|Tool Guide p10'},
+      {t:'list', b:[
+        {l:'Toggle Profile', icon:'panels-top-left', on:true, tip:'Toggle Profile|Toggle the profile viewer.|Tool Guide p10'},
+        {l:'Zoom to Profile', icon:'zoom-in', tip:'Zoom to Profile|Zoom to the active profile.|Tool Guide p10'},
+        {l:'Draw Profile Centerline', icon:'minus', tip:'Draw Profile Centerline|Display the profile centerline.|Tool Guide p10'}
+      ]},
+      {t:'list', b:[
+        {l:'Drape Profile', icon:'waves', tip:'Drape Profile|Drape data into profile view.|Tool Guide p10'},
+        {l:'Drape by Source Points', icon:'git-pull-request', tip:'Drape by Source Points|Drape profile by source points.|Tool Guide p10'},
+        {l:'Display proprieties', icon:'sliders-horizontal', tip:'Display proprieties|Profile display settings.|Tool Guide p10'}
+      ]},
+      {t:'list', b:[
+        {l:'Export Drape Line to File', icon:'file-output', tip:'Export Drape Line to File|Export the draped line to file.|Tool Guide p10'},
+        {l:'Export Settings', icon:'settings', tip:'Export Settings|Configure profile export settings.|Tool Guide p10'}
+      ]}
+    ]},
+    {title:'3D View', items:[
+      {t:'lg', l:'Draw 3D\nWindow', icon:'box', tip:'Draw 3D Window|Draw a 3D view extent.|Tool Guide p10'},
+      {t:'lg', l:'Zoom to Viewer\nExtent', icon:'scan-search', tip:'Zoom to Viewer Extent|Zoom to the 3D viewer extent.|Tool Guide p10'},
+      {t:'list', b:[
+        {l:'Toggles 3D', icon:'hexagon', on:true, tip:'Toggles 3D|Toggle the 3D viewer.|Tool Guide p10'},
+        {l:'Pan with Profile', icon:'move', tip:'Pan with Profile|Sync 3D panning with profile view.|Tool Guide p10'},
+        {l:'Draw profile', icon:'scroll', tip:'Draw profile|Draw profile from the 3D context.|Tool Guide p10'}
+      ]},
+      {t:'list', b:[
+        {l:'Proprieties', icon:'sliders-horizontal', tip:'Proprieties|3D viewer properties.|Tool Guide p10'},
+        {l:'Center Viewers', icon:'plus-square', tip:'Center Viewers|Center viewers on same extent.|Tool Guide p10'},
+        {l:'Immersive Window', icon:'panels-top-left', tip:'Immersive Window|Open immersive window.|Tool Guide p10'}
+      ]}
+    ]},
+    {title:'Navigation', items:[
+      {t:'list', b:[
+        {l:'Fixed Zoom In', icon:'zoom-in', tip:'Fixed Zoom In|Fixed step zoom in.|Tool Guide p10'},
+        {l:'Jump Left', icon:'arrow-left', tip:'Jump Left|Jump the map left.|Tool Guide p10'},
+        {l:'Jump Up', icon:'arrow-up', tip:'Jump Up|Jump the map up.|Tool Guide p10'}
+      ]},
+      {t:'list', b:[
+        {l:'Fixed Zoom Out', icon:'zoom-out', tip:'Fixed Zoom Out|Fixed step zoom out.|Tool Guide p10'},
+        {l:'Jump Right', icon:'arrow-right', tip:'Jump Right|Jump the map right.|Tool Guide p10'},
+        {l:'Jump Down', icon:'arrow-down', tip:'Jump Down|Jump the map down.|Tool Guide p10'}
+      ]},
+      {t:'lg', l:'Show Map\nGrid', icon:'grid-3x3', tip:'Show Map Grid|Toggle map grid display.|Tool Guide p10'}
+    ]},
+    {title:'Grid', items:[
+      {t:'lg', l:'Display\nBoundary', icon:'grid-3x3', tip:'Display Boundary|Show data boundaries.|Tool Guide p10'},
+      {t:'lg', l:'Select\nGraphically', icon:'box-select', tip:'Select Graphically|Graphically select grid elements.|Tool Guide p10'},
+      {t:'lg', l:'Select and Load\nGraphically', icon:'grid-2x2-plus', tip:'Select and Load Graphically|Select and load grid elements graphically.|Tool Guide p10'}
+    ]},
+    {title:'Clipping', items:[
+      {t:'lg', l:'Set Clipping\nPlane', icon:'scissors-line-dashed', tip:'Set Clipping Plane|Create a clipping plane.|Tool Guide p10'},
+      {t:'lg', l:'Enable in\nProfile', icon:'panel-top', tip:'Enable in Profile|Enable clipping in the profile view.|Tool Guide p10'},
+      {t:'lg', l:'Enable in\n3D', icon:'box', tip:'Enable in 3D|Enable clipping in the 3D view.|Tool Guide p10'}
+    ]}
+  ]},
+  { name:'Control Points', tip:'Control Points|Import and analyze control points.|Tool Guide p11', groups:[
+    {title:'Control', items:[
+      {t:'lg', l:'Import', icon:'download', tip:'Import|Import control points.|Tool Guide p11'},
+      {t:'lg', l:'Accuracy Star\nUtility', icon:'person-standing', tip:'Accuracy Star Utility|Launch Accuracy Star utility.|Tool Guide p11'}
+    ]},
+    {title:'Accuracy Analysis', items:[
+      {t:'fields', r:[
+        {t:'select', label:'Control Points:', v:'None', w:180, tip:'Control Points Selection|Select the control point set.|Tool Guide p11'},
+        {t:'select', label:'Elevation Field:', v:'', w:180, tip:'Elevation Field|Choose the elevation field.|Tool Guide p11'}
+      ]},
+      {t:'fields', r:[
+        {t:'select', label:'Active LAS Layer:', v:'Triana_LAS_C250328_194323', w:180, tip:'Active LAS Layer|Select the LAS layer for comparison.|Tool Guide p11'},
+        {t:'select', label:'Drive Mode:', v:'', w:180, tip:'Drive Mode|Choose navigation drive mode.|Tool Guide p11'}
+      ]},
+      {t:'lg', l:'Accuracy\nEstimation', icon:'target', d:true, tip:'Accuracy Estimation|Estimate accuracy from control points.|Tool Guide p11'},
+      {t:'lg', l:'Apply\nCorrection', icon:'wand-2', d:true, tip:'Apply Correction|Apply correction to the active layer.|Tool Guide p11'}
+    ]},
+    {title:'Navigation', items:[
+      {t:'lg', l:'First', icon:'chevrons-left', d:true, tip:'First|Go to the first control point.|Tool Guide p11'},
+      {t:'lg', l:'Last', icon:'chevrons-right', d:true, tip:'Last|Go to the last control point.|Tool Guide p11'},
+      {t:'lg', l:'Previous', icon:'chevron-left', d:true, tip:'Previous|Go to the previous control point.|Tool Guide p11'},
+      {t:'lg', l:'Next', icon:'chevron-right', d:true, tip:'Next|Go to the next control point.|Tool Guide p11'}
+    ]},
+    {title:'Results', items:[{t:'fields', r:[{t:'select', label:'View Reports:', v:'None', w:180, tip:'View Reports|Open generated reports.|Tool Guide p11'}]}]}
+  ]},
+  { name:'Tools', tip:'Tools|Registration and colorization tools.|Tool Guide p11', groups:[
+    {title:'Manual Registration', items:[
+      {t:'lg', l:'LAS to\nLAS', icon:'hand', tip:'LAS to LAS|Manual registration from one LAS to another.|Tool Guide p11'},
+      {t:'lg', l:'LAS to\nControl', icon:'hand-metal', tip:'LAS to Control|Manual registration from LAS to control.|Tool Guide p11'}
+    ]},
+    {title:'Auto Registration', items:[{t:'lg', l:'LAS to\nLAS', icon:'sparkles', tip:'LAS to LAS|Automatic registration from one LAS to another.|Tool Guide p11'}]},
+    {title:'General', items:[{t:'lg', l:'Colorize\nBy Image', icon:'image', tip:'Colorize By Image|Colorize LAS using registered imagery.|Tool Guide p11'}]}
+  ]},
+  { name:'Point Tasks', tip:'Point Tasks|Run point cloud tasks by geometry or features.|Tool Guide p12', groups:[
+    {title:'Point Cloud Tasks', items:[
+      {t:'fields', r:[
+        {t:'select', label:'Filter By:', v:'None', w:100, tip:'Filter By|Choose None, Type or Group.|Tool Guide p12'},
+        {t:'select', label:'Filter:', v:'', w:120, tip:'Filter|Choose a task filter type or group.|Tool Guide p12'},
+        {t:'select', label:'Active:', v:'001 - TrueView - Planar Statistics', w:200, tip:'Active Point Cloud Task (PCT)|Select the active point cloud task. Favorites are marked with ***.|Tool Guide p12'}
+      ]},
+      {t:'lg', l:'Active PCT\nSettings', icon:'settings', tip:'Active PCT Settings|Configure the active point cloud task.|Tool Guide p12'},
+      {t:'lg', l:'PCT\nManager', icon:'folder-cog', tip:'PCT Manager|Manage point cloud task definitions.|Tool Guide p12'}
+    ]},
+    {title:'Active Layer', items:[{t:'lg', l:'By Active\nLAS Layer', icon:'grid-3x3', d:true, tip:'By Active LAS Layer|Execute on the active LAS layer.|Tool Guide p12'}]},
+    {title:'Execute', items:[
+      {t:'list', b:[
+        {l:'By Point', icon:'crosshair', tip:'By Point|Execute task by point location.|Tool Guide p12'},
+        {l:'By Line', icon:'minus', tip:'By Line|Execute task along a line.|Tool Guide p12'},
+        {l:'By Polygon', icon:'pentagon', tip:'By Polygon|Execute task within a polygon.|Tool Guide p12'}
+      ]},
+      {t:'list', b:[
+        {l:'By Envelope', icon:'square', tip:'By Envelope|Execute task in an envelope.|Tool Guide p12'},
+        {l:'By Circle', icon:'circle', tip:'By Circle|Execute task within a circle.|Tool Guide p12'},
+        {l:'By Circular Stamp', icon:'circle-dot', tip:'By Circular Stamp|Execute task using a circular stamp.|Tool Guide p12'}
+      ]},
+      {t:'lg', l:'By Rectangular\nStamp', icon:'square-dashed', tip:'By Rectangular Stamp|Execute task using a rectangular stamp.|Tool Guide p12'}
+    ]},
+    {title:'Feature Layer', items:[
+      {t:'lg', l:'By Feature\nLayer', icon:'diamond', tip:'By Feature Layer|Execute based on a feature layer.|Tool Guide p12'},
+      {t:'lg', l:'By Feature\nAttribute', icon:'diamond-plus', tip:'By Feature Attribute|Execute using feature attributes.|Tool Guide p12'}
+    ]},
+    {title:'Utility', items:[{t:'lg', l:'Recover\nTask', icon:'rotate-ccw', d:true, tip:'Recover Task|Recover an interrupted task.|Tool Guide p12'}]}
+  ]},
+  { name:'QA/QC', tip:'QA/QC|Issue editing and analysis tools.|Tool Guide p12, p13', groups:[
+    {title:'Navigation', items:[
+      {t:'lg', l:'Map\nJump', icon:'move', tip:'Map Jump|Jump the map by the selected amount.|Tool Guide p12'},
+      {t:'fields', r:[
+        {t:'select', label:'Jump Amount:', v:'75', w:70, tip:'Jump Amount|Set jump distance.|Tool Guide p12'},
+        {t:'check', l:'Center Viewers', tip:'Center Viewers|Center all viewers after each jump.|Tool Guide p12'}
+      ]}
+    ]},
+    {title:'Views', items:[
+      {t:'lg', l:'Draw\nProfile', icon:'pen-line', tip:'Draw Profile|Open or draw a QA profile.|Tool Guide p12'},
+      {t:'lg', l:'Draw\n3D', icon:'box', tip:'Draw 3D|Open or draw a QA 3D view.|Tool Guide p12'},
+      {t:'list', b:[
+        {l:'Move off map', icon:'panel-right-close', tip:'Move off map|Auto-pan map as profile approaches edge.|Tool Guide p12'},
+        {l:'Position in center of map', icon:'panel-top', tip:'Position in center of map|Center issue position in the map.|Tool Guide p12'},
+        {l:'Pan 3D with Profile', icon:'move', tip:'Pan 3D with Profile|Pan 3D with profile movement.|Tool Guide p12'}
+      ]},
+      {t:'list', b:[
+        {l:'Pan 3D with Jump', icon:'paintbrush-vertical', tip:'Pan 3D with Jump|Pan 3D window as map jumps.|Tool Guide p12'}
+      ]}
+    ]},
+    {title:'Issues', items:[
+      {t:'list', b:[
+        {l:'QA/QC Issue Editor', icon:'pencil-ruler', tip:'QA/QC Issue Editor|Open the issue editor.|Tool Guide p12'},
+        {l:'Add Rectangular Issue', icon:'square', tip:'Add Rectangular Issue|Create a rectangular issue.|Tool Guide p12'},
+        {l:'Add Polygon Issue', icon:'pentagon', tip:'Add Polygon Issue|Create a polygon issue.|Tool Guide p12'}
+      ]},
+      {t:'list', b:[
+        {l:'Delete Issue', icon:'x', tip:'Delete Issue|Delete the selected issue.|Tool Guide p12'},
+        {l:'Create QA/QC Shapefile', icon:'folder-plus', tip:'Create QA/QC Shapefile|Create an issue shapefile.|Tool Guide p13'},
+        {l:'Add Circular Issue', icon:'circle', tip:'Add Circular Issue|Create a circular issue.|Tool Guide p13'}
+      ]},
+      {t:'list', b:[
+        {l:'Edit Issue', icon:'pencil', tip:'Edit Issue|Edit the selected issue.|Tool Guide p13'},
+        {l:'Target', icon:'crosshair', tip:'Target|Select the target layer or class for issues.|Tool Guide p13'}
+      ]}
+    ]},
+    {title:'Analysis', items:[
+      {t:'lg', l:'Seamline\nAnalysis', icon:'git-compare', tip:'Seamline Analysis|Analyze seamline differences.|Tool Guide p13'},
+      {t:'lg', l:'Boundary\nAnalysis', icon:'grid-3x3', tip:'Boundary Analysis|Analyze data boundaries.|Tool Guide p13'},
+      {t:'lg', l:'Surface\nPrecision', icon:'crosshair', tip:'Surface Precision|Compute surface precision.|Tool Guide p13'},
+      {t:'lg', l:'Point Cloud\nStatistics', icon:'bar-chart-3', tip:'Point Cloud Statistics|Compute statistics for the point cloud.|Tool Guide p13'}
+    ]}
+  ]},
+  { name:'Classification', tip:'Classification|Interactive and automatic classification tools.|Tool Guide p13', groups:[
+    {title:'Filters', items:[
+      {t:'fields', r:[
+        {t:'select', label:'Source:', v:'All Points (System)', w:150, tip:'Source|Choose source points for classification.|Tool Guide p13'},
+        {t:'select', label:'Destination:', v:'2 Ground', w:150, tip:'Destination|Choose destination class.|Tool Guide p13'},
+        {t:'btn', l:'Set Flags', icon:'flag', tip:'Set Flags|Set classification flags.|Tool Guide p13'}
+      ]}
+    ]},
+    {title:'Tools', items:[
+      {t:'lg', l:'Classify within\nPolygon', icon:'shapes', tip:'Classify within Polygon|Classify points inside a polygon.|Tool Guide p13'},
+      {t:'list', b:[
+        {l:'Small Rectangle', icon:'square', tip:'Small Rectangle|Classify using a small rectangle brush.|Tool Guide p13'},
+        {l:'Medium Rectangle', icon:'square', tip:'Medium Rectangle|Classify using a medium rectangle brush.|Tool Guide p13'},
+        {l:'Large Rectangle', icon:'square', tip:'Large Rectangle|Classify using a large rectangle brush.|Tool Guide p13'}
+      ]},
+      {t:'list', b:[
+        {l:'Small Circle', icon:'circle', tip:'Small Circle|Classify using a small circle brush.|Tool Guide p13'},
+        {l:'Medium Circle', icon:'circle', tip:'Medium Circle|Classify using a medium circle brush.|Tool Guide p13'},
+        {l:'Large Circle', icon:'circle', tip:'Large Circle|Classify using a large circle brush.|Tool Guide p13'}
+      ]},
+      {t:'list', b:[
+        {l:'Classify Non-Visible Points', icon:'eye-off', tip:'Classify Non-Visible Points|Include non-visible points in classification.|Tool Guide p13'},
+        {l:'Undo Classification', icon:'undo-2', d:true, tip:'Undo Classification|Undo the last classification action.|Tool Guide p13'},
+        {l:'Redo Classification', icon:'redo-2', d:true, tip:'Redo Classification|Redo the last undone classification action.|Tool Guide p13'}
+      ]}
+    ]},
+    {title:'Auto Classifiers', items:[
+      {t:'lg', l:'Outliers', icon:'scatter-chart', tip:'Outliers|Automatically classify outlier points.|Tool Guide p13'},
+      {t:'lg', l:'Tree\nSegmentation', icon:'trees', tip:'Tree Segmentation|Automatically segment tree points.|Tool Guide p13'}
+    ]}
+  ]},
+  { name:'AI Classification', tip:'Ground Classification|AI ground classification and cleanup tools.|Tool Guide p13', groups:[
+    {title:'Automated', items:[{t:'lg', l:'AI Ground\nClassification', icon:'bot', tip:'AI Ground Classification|Run AI ground classification.|Tool Guide p13'}]},
+    {title:'Cleanup Tools', items:[
+      {t:'lg', l:'Cleanup', icon:'eraser', tip:'Cleanup|Clean up classification results.|Tool Guide p13'},
+      {t:'lg', l:'Reset\nClasses', icon:'rotate-ccw', tip:'Reset Classes|Reset classes after cleanup.|Tool Guide p13'},
+      {t:'lg', l:'Commit\nEdits', icon:'save', tip:'Commit Edits|Commit cleanup edits.|Tool Guide p13'}
+    ]},
+    {title:'Products', items:[
+      {t:'lg', l:'Generate\nProducts', icon:'package', tip:'Generate Products|Generate classification products.|Tool Guide p13'},
+      {t:'lg', l:'Export\nLandXML TIN', icon:'file-code', tip:'Export LandXML TIN|Export the ground surface as LandXML.|Tool Guide p13'}
+    ]}
+  ]},
+  { name:'Volume', tip:'Volume|Area definition, review and volume computation.|Tool Guide p14', groups:[
+    {title:'Source Layers', items:[
+      {t:'fields', r:[
+        {t:'select', label:'LAS Layer:', v:'Active LAS Layer', w:150, tip:'LAS Layer|Choose the LAS source layer.|Tool Guide p14'},
+        {t:'select', label:'Area Layer:', v:'Active Area Layer', w:150, tip:'Area Layer|Choose the area feature layer.|Tool Guide p14'}
+      ]}
+    ]},
+    {title:'Area Definition', items:[
+      {t:'lg', l:'Import\nArea', icon:'import', tip:'Import Area|Import an area boundary.|Tool Guide p14'},
+      {t:'lg', l:'Draw\nArea', icon:'pen-tool', tip:'Draw Area|Digitize a new area boundary.|Tool Guide p14'},
+      {t:'lg', l:'Auto Toe\nExtraction', icon:'mountain', tip:'Auto Toe Extraction|Automatically extract toe lines or areas.|Tool Guide p14'}
+    ]},
+    {title:'Area Review / Edit', items:[
+      {t:'list', b:[
+        {l:'Select/Edit Features', icon:'mouse-pointer-2', tip:'Select/Edit Features|Select or edit volume features.|Tool Guide p14'},
+        {l:'Select/Edit Polygon', icon:'pentagon', tip:'Select/Edit Polygon|Polygon selection mode.|Tool Guide p14'},
+        {l:'Select/Edit Lasso', icon:'lasso', tip:'Select/Edit Lasso|Lasso selection mode.|Tool Guide p14'}
+      ]},
+      {t:'list', b:[
+        {l:'Select/Edit Vertices', icon:'move-3d', tip:'Select/Edit Vertices|Edit area vertices.|Tool Guide p14'},
+        {l:'Add Vertex', icon:'plus', tip:'Add Vertex|Add a new vertex.|Tool Guide p14'},
+        {l:'Delete Vertex', icon:'minus', tip:'Delete Vertex|Delete a vertex.|Tool Guide p14'}
+      ]},
+      {t:'list', b:[
+        {l:'Review Areas', icon:'clipboard-check', tip:'Review Areas|Review defined areas.|Tool Guide p14'},
+        {l:'Define Z', icon:'mountain-snow', tip:'Define Z|Define elevation settings for the area.|Tool Guide p14'}
+      ]}
+    ]},
+    {title:'Volume Calculation', items:[
+      {t:'fields', r:[{t:'select', label:'Volumes Layer:', v:'Active Volumes Layer', w:150, tip:'Volumes Layer|Choose the target volumes layer.|Tool Guide p14'}]},
+      {t:'lg', l:'Compute\nVolumes', icon:'calculator', tip:'Compute Volumes|Compute volumes for defined areas.|Tool Guide p14'},
+      {t:'lg', l:'Quick Compute\nVolume', icon:'gauge', tip:'Quick Compute Volume|Quickly compute a single volume.|Tool Guide p14'},
+      {t:'lg', l:'Review\nVolumes', icon:'clipboard-list', tip:'Review Volumes|Review computed volumes.|Tool Guide p14'}
+    ]},
+    {title:'Settings', items:[{t:'lg', l:'Volumetric Workflow\nSettings', icon:'settings', tip:'Volumetric Workflow Settings|Configure volume workflow settings.|Tool Guide p14'}]}
+  ]},
+  { name:'Feature Edit', tip:'Feature Edit|Feature creation, vertices, geometry and analysis tools.|Tool Guide p14, p15', groups:[
+    {title:'Selection', items:[
+      {t:'lg', l:'Select/Edit\nFeatures', icon:'mouse-pointer-2', tip:'Select/Edit Features|Select and edit features.|Tool Guide p14'},
+      {t:'lg', l:'Select/Edit\nPolygon', icon:'pentagon', tip:'Select/Edit Polygon|Polygon feature selection.|Tool Guide p14'},
+      {t:'lg', l:'Select/Edit\nLasso', icon:'lasso', tip:'Select/Edit Lasso|Lasso selection for features.|Tool Guide p14'}
+    ]},
+    {title:'Features', items:[
+      {t:'list', b:[
+        {l:'Create Feature Layer', icon:'folder-plus', tip:'Create Feature Layer|Create a new feature layer.|Tool Guide p14'},
+        {l:'Active Feature Layer', icon:'layers', tip:'Active Feature Layer|Choose the active feature layer.|Tool Guide p14'},
+        {l:'Enable Auto-Z Surface Mode', icon:'move-vertical', tip:'Enable Auto-Z Surface Mode|Use surface Z values when creating features.|Tool Guide p14'}
+      ]},
+      {t:'list', b:[
+        {l:'Enable Auto-Z Constant Mode', icon:'move-vertical', tip:'Enable Auto-Z Constant Mode|Use constant Z while creating features.|Tool Guide p14'},
+        {l:'Create Feature', icon:'square-plus', tip:'Create Feature|Create a new feature.|Tool Guide p14'},
+        {l:'Create Feature from Selected', icon:'copy-plus', tip:'Create Feature from Selected|Create a feature from current selection.|Tool Guide p14, p15'}
+      ]},
+      {t:'list', b:[
+        {l:'Undo', icon:'undo-2', d:true, tip:'Undo|Undo the last feature edit.|Tool Guide p14'},
+        {l:'Redo', icon:'redo-2', d:true, tip:'Redo|Redo the last undone feature edit.|Tool Guide p14'},
+        {l:'Save Edits', icon:'save', d:true, tip:'Save Edits|Save feature edits.|Tool Guide p14'},
+        {l:'Discard Edits', icon:'trash-2', d:true, tip:'Discard Edits|Discard feature edits.|Tool Guide p14'},
+        {l:'Delete Features', icon:'x', tip:'Delete Features|Delete selected features.|Tool Guide p14'}
+      ]}
+    ]},
+    {title:'Vertices', items:[
+      {t:'lg', l:'Select/Edit', icon:'move-3d', tip:'Select/Edit|Select and edit vertices.|Tool Guide p15'},
+      {t:'lg', l:'Add', icon:'plus', tip:'Add|Add a vertex.|Tool Guide p15'},
+      {t:'lg', l:'Delete', icon:'minus', tip:'Delete|Delete a vertex.|Tool Guide p15'}
+    ]},
+    {title:'Geometry', items:[
+      {t:'list', b:[
+        {l:'Reshape', icon:'spline', tip:'Reshape|Reshape geometry.|Tool Guide p15'},
+        {l:'Respace', icon:'ruler', tip:'Respace|Respace geometry vertices.|Tool Guide p15'}
+      ]},
+      {t:'list', b:[
+        {l:'Split', icon:'scissors', tip:'Split|Split geometry.|Tool Guide p15'},
+        {l:'Reverse', icon:'arrow-left-right', tip:'Reverse|Reverse geometry direction.|Tool Guide p15'}
+      ]},
+      {t:'list', b:[
+        {l:'Merge', icon:'git-merge', tip:'Merge|Merge geometries.|Tool Guide p15'},
+        {l:'Simplify', icon:'minimize-2', tip:'Simplify|Simplify geometry.|Tool Guide p15'}
+      ]},
+      {t:'list', b:[
+        {l:'Buffer Geometry', icon:'square-stack', tip:'Buffer Geometry|Create a buffer around selected geometry.|Tool Guide p15'},
+        {l:'Union Geometry', icon:'copy', tip:'Union Geometry|Union selected geometries.|Tool Guide p15'},
+        {l:'Intersect Geometry', icon:'copy-check', tip:'Intersect Geometry|Intersect selected geometries.|Tool Guide p15'},
+        {l:'Assemble Multipart', icon:'combine', tip:'Assemble Multipart|Combine into multipart geometry.|Tool Guide p15'},
+        {l:'Disassemble Geometry', icon:'ungroup', tip:'Disassemble Geometry|Break multipart geometry apart.|Tool Guide p15'}
+      ]}
+    ]},
+    {title:'Tools', items:[
+      {t:'lg', l:'Edit\nPowerlines', icon:'tower-control', tip:'Edit Powerlines|Edit powerline features.|Tool Guide p15'},
+      {t:'lg', l:'Double Line\nDrain', icon:'git-fork', tip:'Double Line Drain|Create drainage features.|Tool Guide p15'},
+      {t:'lg', l:'Create Seawall\nFeature', icon:'waves', tip:'Create Seawall Feature|Create seawall features.|Tool Guide p15'}
+    ]},
+    {title:'Options', items:[
+      {t:'lg', l:'Feature\nAnalyst', icon:'scan-search', tip:'Feature Analyst|Open Feature Analyst dialog.|Tool Guide p15'},
+      {t:'lg', l:'Schema\nEditor', icon:'table', tip:'Schema Editor|Open the schema editor.|Tool Guide p15, p16'},
+      {t:'lg', l:'Feature Edit\nOptions', icon:'settings', tip:'Feature Edit Options|Configure feature edit options.|Tool Guide p15'}
+    ]}
+  ]},
+  { name:'Cloud', tip:'Cloud|Cloud data management tools.|Tool Guide p16', groups:[
+    {title:'Data Management', items:[
+      {t:'lg', l:'Folders', icon:'folder', tip:'Folders|Browse cloud folders.|Tool Guide p16'},
+      {t:'lg', l:'Power\nSearch', icon:'search', tip:'Power Search|Search cloud-managed assets.|Tool Guide p16'},
+      {t:'lg', l:'Upload to\nCloud', icon:'upload-cloud', tip:'Upload to Cloud|Upload data to LP360 Cloud.|Tool Guide p16'},
+      {t:'lg', l:'Download from\nCloud', icon:'download-cloud', tip:'Download from Cloud|Download cloud data locally.|Tool Guide p16'},
+      {t:'lg', l:'Add Cloud\nLayer', icon:'cloud-plus', tip:'Add Cloud Layer|Add a cloud-backed layer to the project.|Tool Guide p16'}
+    ]}
+  ]},
+  { name:'Support', tip:'Support|License, help and contact resources.|Tool Guide p16', groups:[
+    {title:'License', items:[{t:'lg', l:'License\nManager', icon:'settings', tip:'License Manager|Open the License Manager.|Tool Guide p16'}]},
+    {title:'Help', items:[
+      {t:'lg', l:'Check for\nUpdates', icon:'refresh-cw', tip:'Check for Updates|Check for LP360 updates.|Tool Guide p16'},
+      {t:'lg', l:'Help', icon:'circle-help', tip:'Help|Open help documentation.|Tool Guide p16'},
+      {t:'lg', l:'Upload to\nSupport', icon:'upload', tip:'Upload to Support|Upload files to support.|Tool Guide p16'},
+      {t:'lg', l:'Download from\nSupport', icon:'download', tip:'Download from Support|Download support packages.|Tool Guide p16'},
+      {t:'lg', l:'Knowledge\nBase', icon:'book-open', tip:'Knowledge Base|Open the knowledge base.|Tool Guide p16'},
+      {t:'lg', l:'User\nCommunity', icon:'users', tip:'User Community|Open the user community.|Tool Guide p16'},
+      {t:'lg', l:'About', icon:'help-circle', tip:'About|Open version and product information.|Tool Guide p16'}
+    ]},
+    {title:'Contact', items:[
+      {t:'lg', l:'Request a\nFeature', icon:'mail', tip:'Request a Feature|Send a feature request.|Tool Guide p16'},
+      {t:'lg', l:'Portal', icon:'store', tip:'Portal|Open the support portal.|Tool Guide p16'}
+    ]}
+  ]},
+  { name:'Buttons I Pressed', custom:true, tip:'Buttons I Pressed|Custom user tab.', placeholder:'Buttons I Pressed (custom tab)' }
+];
+
+function renderIcon(it, size=28){
+  if(it.icon && svgIcon(it.icon)) return `<div class="ic">${svgIcon(it.icon)}</div>`;
+  return `<div class="ic"><i data-lucide="${it.icon||'square'}" width="${Math.min(size,28)}" height="${Math.min(size,28)}"></i></div>`;
+}
+function rLg(it){
+  return `<div class="btn-lg ${it.d?'disabled':''} ${it.launch?'launch':''}" data-tip="${esc(it.tip)}">${renderIcon(it)}<div class="lbl">${lbl(it.l)}${it.c?' <span class="dropcaret">&#9662;</span>':''}</div></div>`;
+}
+function rSm(b){
+  const icon = svgIcon(b.icon) ? svgIcon(b.icon) : `<i data-lucide="${b.icon||'square'}" width="15" height="15"></i>`;
+  return `<div class="btn-sm ${b.d?'disabled':''} ${b.on?'on-sm':''}" data-tip="${esc(b.tip)}"><span class="ic">${icon}</span><span class="lbl">${b.l}</span>${b.c?' <span class="dropcaret">&#9662;</span>':''}</div>`;
+}
+function rRow(r){
+  if(r.t==='select') return `<div class="field-row">${r.label?`<label>${r.label}</label>`:''}<div class="selectbox" style="min-width:${r.w||150}px" data-tip="${esc(r.tip)}"><span>${r.v||'&nbsp;'}</span><span class="dd">&#9662;</span></div></div>`;
+  if(r.t==='check') return `<div class="field-row"><div class="check ${r.on?'on':''}" data-tip="${esc(r.tip)}"><span class="box">${r.on?CHECK:''}</span> ${r.l}</div></div>`;
+  if(r.t==='btn'){ const icon = svgIcon(r.icon) ? svgIcon(r.icon) : `<i data-lucide="${r.icon||'square'}" width="15" height="15"></i>`; return `<div class="field-row"><div class="btn-sm ${r.d?'disabled':''}" data-tip="${esc(r.tip)}"><span class="ic">${icon}</span><span class="lbl">${r.l}</span>${r.c?' <span class="dropcaret">&#9662;</span>':''}</div></div>`; }
+  return '';
+}
+function rItem(it){ if(it.t==='lg') return rLg(it); if(it.t==='list') return `<div class="btn-col">${it.b.map(rSm).join('')}</div>`; if(it.t==='fields') return `<div class="field-col">${it.r.map(rRow).join('')}</div>`; return ''; }
+function rGroup(g){ return `<div class="group"><div class="group-body">${g.items.map(rItem).join('')}</div><div class="group-title">${g.title||'&nbsp;'}</div></div>`; }
+
+const strip = document.getElementById('tabstrip');
+TABS.forEach((tab, idx)=>{ const el=document.createElement('div'); el.className='tab'; el.textContent=tab.name; el.setAttribute('data-tip',tab.tip); el.addEventListener('click',()=>selectTab(idx)); strip.appendChild(el); });
+const collapse=document.createElement('div'); collapse.className='collapse'; collapse.innerHTML='&#94;'; collapse.setAttribute('data-tip','Minimize the Ribbon|Collapse the ribbon to save vertical space.|Tool Guide p1'); strip.appendChild(collapse);
+const utag=document.createElement('div'); utag.className='user-tag'; utag.textContent=USER; utag.setAttribute('data-tip','Account|Signed-in account, organization and LP360 point balance.'); strip.appendChild(utag);
+
+const ribbon=document.getElementById('ribbon'); const status=document.getElementById('statusMsg');
+function selectTab(idx){ [...strip.querySelectorAll('.tab')].forEach((t,i)=>t.classList.toggle('active',i===idx)); const tab=TABS[idx]; if(tab.placeholder){ ribbon.innerHTML=`<div class="placeholder"><div class="pic"><i data-lucide="image-off" width="22" height="22"></i></div><div>The <b>${tab.name}</b> ribbon isn't captured in the guide. Still clickable, just not fully tooled out.</div></div>`; } else { ribbon.innerHTML=tab.groups.map(rGroup).join(''); } if(window.lucide) lucide.createIcons(); status.textContent=tab.name+' tab active.'; }
+
+function renderMapToolbar(){
+  const root=document.getElementById('maptoolbar');
+  root.innerHTML='';
+  MAP_TOOLS.forEach((t,idx)=>{
+    const btn=document.createElement('div'); btn.className='mt-btn'+((t.k==='contours-off'||t.k==='active-las')?'':''); btn.setAttribute('data-tip',t.tip);
+    btn.innerHTML=`${iconMarkup(t.k,'square')}<span class="txt">${t.label}</span>`;
+    root.appendChild(btn);
+    if([4,7,10,13,17].includes(idx)){ const sep=document.createElement('div'); sep.className='vsep'; root.appendChild(sep); }
+  });
+  const count=document.createElement('div'); count.className='count-txt'; count.textContent='702,072 Points (33.33%)'; root.appendChild(count);
+}
+renderMapToolbar();
+
+const tip=document.getElementById('tooltip'); const ttTitle=tip.querySelector('.tt-title'); const ttBody=tip.querySelector('.tt-body'); const ttRef=tip.querySelector('.tt-ref');
+function parseTip(el){ const raw=el.getAttribute('data-tip')||''; const parts=raw.split('|'); return {title:(parts[0]||'').trim(), body:(parts[1]||'').trim(), ref:(parts[2]||'').trim()}; }
+function position(e){ const pad=14; let x=e.clientX+pad,y=e.clientY+pad; const r=tip.getBoundingClientRect(); if(x+r.width>window.innerWidth-8)x=e.clientX-r.width-pad; if(y+r.height>window.innerHeight-8)y=e.clientY-r.height-pad; tip.style.left=x+'px'; tip.style.top=y+'px'; }
+document.addEventListener('mouseover',e=>{ const el=e.target.closest('[data-tip]'); if(!el)return; const {title,body,ref}=parseTip(el); ttTitle.textContent=title; ttBody.textContent=body; ttRef.textContent=ref||''; tip.classList.add('show'); position(e); });
+document.addEventListener('mousemove',e=>{ if(tip.classList.contains('show')) position(e); });
+document.addEventListener('mouseout',e=>{ const el=e.target.closest('[data-tip]'); if(el && !el.contains(e.relatedTarget)) tip.classList.remove('show'); });
+
+/* lightweight click handling */
+document.addEventListener('click',e=>{
+  const el=e.target.closest('[data-tip]'); if(!el) return;
+  if(el.classList.contains('tab')) return;
+  const {title,body}=parseTip(el);
+  if(title==='Trajectory Processing' && el.classList.contains('btn-lg')){ openWizard(); status.textContent='Trajectory Processing wizard launched.'; return; }
+  if(el.classList.contains('disabled')){ status.textContent=title+' is currently unavailable in this context.'; return; }
+  if(el.classList.contains('check')){ el.classList.toggle('on'); el.querySelector('.box').innerHTML=el.classList.contains('on')?CHECK:''; if(window.lucide) lucide.createIcons(); }
+  status.textContent='▶ '+title+' : '+body;
+});
+
+/* wizard html injection */
+const wizardHTML = `
+  <div class="dialog" data-step="0" style="width:760px;height:430px;">
+    <div class="w-titlebar"><span class="brand" data-brand></span><span class="ttl">Sensor Processing - Processing Type</span><span class="win"><span class="x" data-cancel><i data-lucide="x" width="16" height="16"></i></span></span></div>
+    <div class="content"><fieldset><legend>Processing Type</legend><div style="display:flex;flex-direction:column;gap:12px;"><div class="chk on"><span class="cb"><i data-lucide="check" width="11" height="11"></i></span> Trajectory Processing</div><div class="chk on"><span class="cb"><i data-lucide="check" width="11" height="11"></i></span> Geocoding</div><div class="chk dis"><span class="cb"></span> SLAM</div><div class="chk dis"><span class="cb"></span> RESEPI</div></div></fieldset></div>
+    <div class="footer"><button class="wbtn">Help</button><button class="wbtn"><i data-lucide="list" width="15" height="15"></i> Job Manager</button><span class="spacer"></span><button class="wbtn dis">&lt; Previous</button><button class="wbtn default" data-next>Next &gt;</button><button class="wbtn dis">Submit...</button><button class="wbtn" data-cancel>Cancel</button></div>
+  </div>
+  <div class="dialog" data-step="1" style="width:940px;height:520px;">
+    <div class="w-titlebar"><span class="brand" data-brand></span><span class="ttl">Sensor Processing - Trajectory Processing</span><span class="win"><span class="x" data-cancel><i data-lucide="x" width="16" height="16"></i></span></span></div>
+    <div class="content" style="display:flex;gap:14px;"><div style="flex:1;min-width:0;display:flex;flex-direction:column;"><div class="grid-toolbar"><span class="ti"><i data-lucide="list-checks" width="16" height="16"></i></span><span class="ti"><i data-lucide="list" width="16" height="16"></i></span><span class="ti" style="color:var(--accent)"><i data-lucide="refresh-cw" width="16" height="16"></i></span><span style="margin-left:4px;color:var(--ink)">Cycles:</span></div><div class="grid"><div class="ghead"><div class="gc" style="width:34px"></div><div class="gc" style="flex:1.4">Cycle</div><div class="gc" style="width:78px">Settings</div><div class="gc" style="width:110px">Status</div><div class="gc" style="width:104px">Sensor Model</div><div class="gc" style="width:104px">Serial Number</div><div class="gc" style="width:104px">Hardware Type</div><div class="gc" style="flex:1.1">Start Time (UTC)</div><div class="gc" style="flex:1.1;border-right:none">End Time (UTC)</div></div><div class="grow sel"><div class="gc c" style="width:34px"><span class="chk on" style="pointer-events:none"><span class="cb"><i data-lucide="check" width="10" height="10"></i></span></span></div><div class="gc" style="flex:1.4">C250328_194323</div><div class="gc c" style="width:78px"><span class="gear" data-gear><i data-lucide="settings" width="14" height="14"></i></span></div><div class="gc" style="width:110px">Default Settings</div><div class="gc" style="width:104px">TrueView537</div><div class="gc" style="width:104px">131SN020</div><div class="gc" style="width:104px">Cloud</div><div class="gc" style="flex:1.1">2025-03-28 19:44:09</div><div class="gc" style="flex:1.1;border-right:none">2025-03-28 19:50:06</div></div></div></div><div style="width:180px;display:flex;flex-direction:column;"><div class="sub-fs" style="margin-bottom:16px;"><div class="legend">Settings</div><div class="side-btns"><div class="sb dis"><span class="ic"><i data-lucide="copy" width="15" height="15"></i></span> Copy</div><div class="sb dis"><span class="ic"><i data-lucide="clipboard" width="15" height="15"></i></span> Paste</div></div></div><div class="side-btns"><div class="sb" data-baseobs><span class="ic"><i data-lucide="triangle" width="15" height="15"></i></span> Base Obs Files</div></div><div style="margin-top:auto;"><div class="muted" style="margin-bottom:4px;">Current Balance:</div><input class="inp ro" value="328.00" readonly></div></div></div>
+    <div class="footer"><button class="wbtn">Help</button><button class="wbtn"><i data-lucide="list" width="15" height="15"></i> Job Manager</button><span class="spacer"></span><button class="wbtn" data-prev>&lt; Previous</button><button class="wbtn default" data-next>Next &gt;</button><button class="wbtn dis">Submit...</button><button class="wbtn" data-cancel>Cancel</button></div>
+  </div>
+  <div class="dialog" data-step="2" style="width:900px;height:640px;"><div class="w-titlebar"><span class="brand" data-brand></span><span class="ttl">POSPac Processing Wizard - Input Settings Page</span><span class="win"><span class="x" data-cancel><i data-lucide="x" width="16" height="16"></i></span></span></div><div class="content"><div style="display:flex;gap:14px;"><fieldset style="flex:1;"><legend>Cycle</legend><label class="lbl">Cycle Name:</label><input class="inp" style="margin:5px 0 12px" value="C250328_194323"><label class="lbl">Raw Position File:</label><input class="inp ro" style="margin:5px 0 12px" value="C:\Users\Bryce\Documents\LP360\LP360_Projects\Practice1\Area_Triana\Cycle_250328_1943" readonly><div class="chk dis" style="margin-bottom:10px;"><span class="cb"></span> Enable Payload Profile</div><label class="lbl muted">Payload Profile:</label><div class="selwrap dis" style="margin:5px 0 12px"><input class="inp dis" value="TV535vC_M300_M350_AV18" readonly><span class="cv">&#9662;</span></div><label class="lbl">Override APX Mounting Parameters File:</label><div style="display:flex;gap:6px;margin-top:5px;"><input class="inp" value=""><button class="wbtn" style="min-width:0;width:34px">...</button></div></fieldset><fieldset style="width:270px;"><legend>Processing Range</legend><div class="chk dis" style="margin-bottom:14px;"><span class="cb"></span> Override Range</div><label class="lbl muted">Start GPS Week Second:</label><input class="inp dis" style="margin:5px 0 14px" value="503057" readonly><label class="lbl muted">Stop GPS Week Second:</label><input class="inp dis" style="margin-top:5px" value="503428" readonly></fieldset></div><div style="display:flex;gap:14px;margin-top:14px;"><fieldset style="flex:1;"><legend>Processing Mode</legend><div style="display:flex;flex-direction:column;gap:10px;"><div class="radio" data-radio="pmode"><span class="dot"></span> QC-Only (Realtime)</div><div class="radio on" data-radio="pmode"><span class="dot"></span> Single Base</div><div class="radio" data-radio="pmode"><span class="dot"></span> Smart Base</div><div class="radio" data-radio="pmode"><span class="dot"></span> PP-RTX</div></div></fieldset><fieldset style="flex:1;"><legend>Run Location</legend><div class="radio on" style="margin-bottom:14px;"><span class="dot"></span> Cloud</div><a class="wlink" href="#" onclick="return false;">Applanix POSPac Cloud Status</a></fieldset><fieldset style="flex:1;"><legend>GNSS Settings</legend><div style="display:flex;flex-direction:column;gap:10px;"><div class="radio on" data-radio="gnss"><span class="dot"></span> Use All Constellations</div><div class="radio" data-radio="gnss"><span class="dot"></span> Use Only GPS Satellites</div></div></fieldset></div><fieldset style="margin-top:14px;"><legend>Cycle Summary</legend><div style="display:flex;gap:30px;"><div style="flex:1;"><div class="form-row"><label class="lbl" style="width:120px">Sensor Model:</label><input class="inp ro" style="text-align:center" value="TrueView537" readonly></div><div class="form-row"><label class="lbl" style="width:120px">Serial Number:</label><input class="inp ro" style="text-align:center" value="131SN020" readonly></div><div class="form-row"><label class="lbl" style="width:120px">Hardware Type:</label><input class="inp ro" style="text-align:center" value="Cloud" readonly></div><div class="form-row"><label class="lbl" style="width:120px">UTC Start Time:</label><input class="inp ro" style="text-align:center" value="2025-03-28 19:44:09" readonly></div><div class="form-row"><label class="lbl" style="width:120px">UTC End Time:</label><input class="inp ro" style="text-align:center" value="2025-03-28 19:50:06" readonly></div><div class="form-row" style="margin-bottom:0"><label class="lbl" style="width:120px">Total Minutes:</label><input class="inp ro" style="text-align:center;width:80px" value="6" readonly></div></div><div style="flex:1;"><div style="margin-bottom:6px;">Current Balance:</div><div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;"><input class="inp ro" style="width:120px" value="328.00" readonly> LP360 Points</div><div style="margin-bottom:6px;">Cost Estimate:</div><div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;"><input class="inp ro" style="width:120px" value="0.00" readonly> <span class="costlink">( No Cost )</span></div><div class="muted" style="max-width:340px;">Note: Total Minutes will be reduced by non-flying minutes after processing.</div></div></div></fieldset></div><div class="footer"><button class="wbtn">Help</button><span class="spacer"></span><button class="wbtn dis">&lt; Previous</button><button class="wbtn default" data-next>Next &gt;</button><button class="wbtn dis">OK</button><button class="wbtn" data-cancel>Cancel</button></div></div>
+  <div class="dialog" data-step="3" style="width:920px;height:660px;"><div class="w-titlebar"><span class="brand" data-brand></span><span class="ttl">POSPac Processing Wizard - Base Station Settings Page</span><span class="win"><span class="x" data-cancel><i data-lucide="x" width="16" height="16"></i></span></span></div><div class="content"><fieldset><legend>Base Station Observation File(s)</legend><div style="display:flex;gap:10px;"><div class="grid" style="flex:1;"><div class="ghead"><div class="gc" style="flex:1">Receiver/Antenna</div><div class="gc" style="flex:1.1">UTC Start</div><div class="gc" style="flex:1.1">UTC End</div><div class="gc" style="flex:1.3;border-right:none">&nbsp;</div></div><div class="grow sel"><div class="gc" style="flex:1">SPS855 / TRM55971.00</div><div class="gc" style="flex:1.1">2025-03-28 19:38:42.000</div><div class="gc" style="flex:1.1">2025-03-28 19:59:41.000</div><div class="gc" style="flex:1.3;border-right:none">C:\Users\Bryce\Documents\LP360</div></div><div style="height:70px"></div></div><div class="plusmin"><div class="pm add"><i data-lucide="plus" width="16" height="16"></i></div><div class="pm rem"><i data-lucide="minus" width="16" height="16"></i></div></div></div></fieldset><fieldset style="margin-top:14px;"><legend>Base Station Location</legend><div style="display:flex;gap:14px;"><div class="sub-fs" style="flex:1;"><div class="legend">Location From</div><div class="radio" data-radio="locfrom" style="margin-bottom:10px;"><span class="dot"></span> Computed using Trimble CenterPoint RTX</div><div class="radio on" data-radio="locfrom"><span class="dot"></span> Survey Nail</div></div><div class="sub-fs" style="width:320px;"><div class="legend">Settings</div><div class="chk on" style="margin-bottom:12px;"><span class="cb"><i data-lucide="check" width="11" height="11"></i></span> Use Plate Model Velocity</div><div style="display:flex;align-items:center;gap:8px;"><label class="lbl">Antenna Height (m):</label><input class="inp" style="width:80px" value="0"></div></div></div><div class="sub-fs" style="margin-top:14px;"><div class="legend">Survey Nail</div><div style="display:flex;gap:20px;"><div style="flex:1;"><label class="lbl">Name: <span class="muted">( Base Station Distance: 3.6 meters )</span></label><div style="display:flex;gap:6px;margin-top:5px;"><div class="selwrap"><input class="inp ro" value="GeoCueHQ" readonly><span class="cv">&#9662;</span></div><span class="nailbtn" data-nail><i data-lucide="map-pin" width="16" height="16"></i></span></div></div><div style="flex:1;"><label class="lbl">Description:</label><input class="inp" style="margin-top:5px" value=""></div></div></div><div style="display:flex;gap:14px;margin-top:14px;"><div class="sub-fs" style="flex:1;"><div class="legend">Location</div><div style="display:flex;gap:26px;margin-bottom:12px;"><div class="radio on" data-radio="loctype"><span class="dot"></span> Decimal Degrees</div><div class="radio" data-radio="loctype"><span class="dot"></span> DMS</div></div><label class="lbl">Latitude: <span class="muted">[-]DD.ddddddd</span></label><input class="inp" style="margin:5px 0 12px" value="34.58271742"><label class="lbl">Longitude: <span class="muted">[-]DDD.ddddddd</span></label><input class="inp" style="margin:5px 0 12px" value="-86.73970362"><div style="display:flex;align-items:center;gap:8px;justify-content:flex-end;"><label class="lbl">Ellipsoid Height:</label><input class="inp" style="width:110px" value="164.396"></div></div><div class="sub-fs" style="width:360px;"><div class="legend">Frame</div><div class="form-row"><label class="lbl" style="width:74px">Frame:</label><div class="selwrap dis"><input class="inp dis" value="NAD83_2011" readonly><span class="cv">&#9662;</span></div></div><div class="form-row"><label class="lbl" style="width:74px">Epoch:</label><div class="selwrap dis"><input class="inp dis" value="1/1/2010" readonly><span class="cv"><i data-lucide="calendar" width="13" height="13"></i></span></div></div><div class="form-row" style="margin-bottom:0"><label class="lbl" style="width:74px">Ellipsoid:</label><div class="selwrap dis"><input class="inp dis" value="GRS_1980" readonly><span class="cv">&#9662;</span></div></div></div></div></fieldset></div><div class="footer"><button class="wbtn">Help</button><span class="spacer"></span><button class="wbtn" data-prev>&lt; Previous</button><button class="wbtn default" data-next>Next &gt;</button><button class="wbtn dis">OK</button><button class="wbtn" data-cancel>Cancel</button></div></div>
+  <div class="dialog" data-step="4" style="width:760px;height:430px;"><div class="w-titlebar"><span class="brand" data-brand></span><span class="ttl">POSPac Processing Wizard - Review / Results Page</span><span class="win"><span class="x" data-cancel><i data-lucide="x" width="16" height="16"></i></span></span></div><div class="content"><fieldset><legend>Review Current Settings</legend><div style="display:flex;gap:40px;"><div><div class="form-row"><label class="lbl" style="width:130px">Estimated Minutes:</label><input class="inp ro" style="width:150px" value="6" readonly></div><div class="form-row"><label class="lbl" style="width:130px">Hardware Type:</label><input class="inp ro" style="width:200px" value="Cloud" readonly></div><div class="form-row"><label class="lbl" style="width:130px">Run Location:</label><input class="inp ro" style="width:200px" value="Cloud" readonly></div><div class="form-row" style="margin-bottom:0"><label class="lbl" style="width:130px">Processing Mode:</label><input class="inp ro" style="width:200px" value="Single Base" readonly></div></div><div><div style="margin-bottom:6px;">Current Balance:</div><div style="display:flex;align-items:center;gap:8px;margin-bottom:18px;"><input class="inp ro" style="width:130px" value="328.00" readonly> LP360 Points</div><div style="margin-bottom:6px;">Cost Estimate:</div><div style="display:flex;align-items:center;gap:8px;"><input class="inp ro" style="width:130px" value="0.00" readonly> <span class="costlink">( No Cost )</span></div></div></div></fieldset></div><div class="footer"><button class="wbtn">Help</button><span class="spacer"></span><button class="wbtn" data-prev>&lt; Previous</button><button class="wbtn dis">Next &gt;</button><button class="wbtn default" data-submit>OK</button><button class="wbtn" data-cancel>Cancel</button></div></div>`;
+const nailHTML = `<div class="dialog active" style="width:660px;height:440px;"><div class="w-titlebar"><span class="brand" data-brand></span><span class="ttl">Survey Nail Manager</span><span class="win"><span><i data-lucide="minus" width="15" height="15"></i></span><span><i data-lucide="square" width="12" height="12"></i></span><span class="x" data-nailclose><i data-lucide="x" width="16" height="16"></i></span></span></div><div class="content" style="display:flex;gap:14px;"><div style="flex:1;display:flex;flex-direction:column;"><div style="margin-bottom:6px;">Survey Nails <span class="muted">( Total: 2 )</span></div><div class="grid" style="flex:1;"><div class="ghead"><div class="gc" style="width:130px">Name</div><div class="gc" style="flex:1">Description</div><div class="gc" style="width:110px">Latitude</div><div class="gc" style="width:90px;border-right:none">Long</div></div><div class="grow sel"><div class="gc" style="width:130px">GeoCue CORs</div><div class="gc" style="flex:1">Updated COR station using Trimble receiver/antenna</div><div class="gc" style="width:110px">34.58271742</div><div class="gc" style="width:90px;border-right:none">-86.73</div></div><div class="grow"><div class="gc" style="width:130px">GeoCueHQ</div><div class="gc" style="flex:1"></div><div class="gc" style="width:110px">34.58271742</div><div class="gc" style="width:90px;border-right:none">-86.73</div></div></div></div><div class="side-btns" style="width:150px;"><div class="sb"><span class="ic"><i data-lucide="plus" width="15" height="15"></i></span>Add</div><div class="sb dis"><span class="ic"><i data-lucide="copy" width="15" height="15"></i></span>Clone</div><div class="sb dis"><span class="ic"><i data-lucide="pencil" width="15" height="15"></i></span>Edit</div><div class="sb dis"><span class="ic"><i data-lucide="x" width="15" height="15"></i></span>Delete</div><div class="sb"><span class="ic"><i data-lucide="download" width="15" height="15"></i></span>Import</div><div class="sb dis"><span class="ic"><i data-lucide="upload" width="15" height="15"></i></span>Export</div><div class="sb"><span class="ic"><i data-lucide="map-pin-plus" width="15" height="15"></i></span>Add to Project</div></div></div><div class="footer"><button class="wbtn">Help</button><span class="spacer"></span><button class="wbtn default" data-nailclose>OK</button></div></div>`;
+document.getElementById('wizard').innerHTML=wizardHTML; document.getElementById('nailBackdrop').innerHTML=nailHTML;
+
+const brandSVG = '<svg width="16" height="16" viewBox="0 0 16 16"><g fill="oklch(0.55 0.14 250)"><rect x="1" y="1" width="3" height="3"/><rect x="6" y="1" width="3" height="3" fill="oklch(0.72 0.1 250)"/><rect x="1" y="6" width="3" height="3" fill="oklch(0.72 0.1 250)"/><rect x="6" y="6" width="3" height="3"/><rect x="11" y="3" width="2.4" height="2.4" fill="oklch(0.78 0.08 250)"/><rect x="3" y="11" width="2.4" height="2.4" fill="oklch(0.78 0.08 250)"/></g></svg>';
+document.querySelectorAll('[data-brand]').forEach(b=>b.innerHTML=brandSVG);
+const wizard=document.getElementById('wizard'); const dialogs=[...wizard.querySelectorAll('.dialog')]; let step=0;
+function showStep(i){ step=i; dialogs.forEach(d=>d.classList.toggle('active',+d.dataset.step===i)); if(window.lucide) lucide.createIcons(); }
+function openWizard(){ wizard.classList.add('show'); showStep(0); if(window.lucide) lucide.createIcons(); }
+function closeWizard(){ wizard.classList.remove('show'); }
+wizard.addEventListener('click',e=>{
+  if(e.target.closest('[data-next]')){ if(step<dialogs.length-1) showStep(step+1); }
+  else if(e.target.closest('[data-prev]')){ if(step>0) showStep(step-1); }
+  else if(e.target.closest('[data-cancel]')) closeWizard();
+  else if(e.target.closest('[data-submit]')){ closeWizard(); toast('Trajectory processing job submitted to Applanix POSPac Cloud. Track it in Job Manager.'); }
+  else if(e.target.closest('[data-gear]')) toast('Cycle Settings: opens per-cycle trajectory processing settings.');
+  else if(e.target.closest('[data-baseobs]')) toast('Base Obs Files: attach or review base station observation files for the cycle.');
+  else if(e.target.closest('[data-nail]')) document.getElementById('nailBackdrop').classList.add('show');
+  else if(e.target.closest('[data-radio]')){ const el=e.target.closest('[data-radio]'); const grp=el.dataset.radio; el.closest('.dialog').querySelectorAll(`[data-radio="${grp}"]`).forEach(r=>r.classList.remove('on')); el.classList.add('on'); }
+  else if(e.target.closest('.chk') && !e.target.closest('.chk').classList.contains('dis') && !e.target.closest('.grow')){ const c=e.target.closest('.chk'); c.classList.toggle('on'); c.querySelector('.cb').innerHTML=c.classList.contains('on')?'<i data-lucide="check" width="11" height="11"></i>':''; if(window.lucide) lucide.createIcons(); }
+});
+document.getElementById('nailBackdrop').addEventListener('click',e=>{ if(e.target.closest('[data-nailclose]')) document.getElementById('nailBackdrop').classList.remove('show'); });
+const toastEl=document.getElementById('toast'),toastMsg=document.getElementById('toastMsg'); let tHide; function toast(msg){ toastMsg.textContent=msg; toastEl.classList.add('show'); clearTimeout(tHide); tHide=setTimeout(()=>toastEl.classList.remove('show'),3400); }
+
+selectTab(1);
+if(window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>
